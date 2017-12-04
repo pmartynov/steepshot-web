@@ -112,7 +112,7 @@ class UsersComponent extends React.Component {
           {this.renderHeader()} 
           <InfiniteScroll
             pageStart={0}
-            initialLoad={false}
+            initialLoad={true}
             loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
             hasMore={this.state.hasMore}
             loader={

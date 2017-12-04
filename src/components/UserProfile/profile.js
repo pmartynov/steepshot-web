@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import LocalizedStrings from '../Localization/index.js';
-import { 
+import {
   getUserProfile
 } from '../../actions/profile';
 import {
@@ -29,7 +29,7 @@ class UserProfile extends React.Component {
       authorName : this.props.username,
       profile : null,
       localize : LocalizedStrings.getInstance(),
-      showFollow : this.props.showFollow != undefined ? this.props.showFollow  : true,
+      showFollow : this.props.showFollow !== undefined ? this.props.showFollow  : true,
       itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username),
       followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
       followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
@@ -160,24 +160,25 @@ class UserProfile extends React.Component {
                   ?
                     null
                   :
-                    <TabsWrapper 
+                    <TabsWrapper
                       activeTab={this.state.activeItemIndex}
                     >
-                      <ItemsComponent 
-                        point={this.state.itemsPoint} 
+                      <ItemsComponent
+                        point={this.state.itemsPoint}
                         wrapperModifier="posts-list clearfix type-2"
                         forceRefresh={this.state.needsForceRefresh}
+                        clearPostHeader={true}
                       />
-                      <UsersComponent 
-                        point={this.state.followersPoint} 
-                        usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label} 
+                      <UsersComponent
+                        point={this.state.followersPoint}
+                        usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label}
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowers}
                         forceRefresh={this.state.needsForceRefresh}
                       />
-                      <UsersComponent 
+                      <UsersComponent
                         point={this.state.followingPoint}
-                        usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}  
+                        usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowing}
                         forceRefresh={this.state.needsForceRefresh}

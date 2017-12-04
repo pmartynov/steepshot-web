@@ -20,7 +20,7 @@ class FooterComponent extends React.Component {
                                         <ul className="list_level_1 list-reset">
                                             {/* <li className="item_1"><a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a></li>
                                             <li className="item_1"><a href="https://twitter.com/steepshot" target="_blank">Twitter</a></li> */}
-                                            <li className="item_1">                                                
+                                            <li className="item_1">
                                                 <Link to="/guide">
                                                     Guidelines
                                                 </Link>

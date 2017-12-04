@@ -42,36 +42,47 @@ class CreatePost extends React.Component {
     }
 
     handleChange(event) {
+
+        // id="formDESCRIPTION" <-- second comment in input field
+
         let name = event.target.name;
         let value = event.target.value;
 
         if (name == this.state.tagInputName) {
-            this.setState({ 
-                [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "").toLowerCase()
-            }, () =>
-                this.setState({
-                    tagList : this.getTagsArray(this.state.tag),
-                    tagError : false
-                })      
-            );
+            let valueArr = value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "").toLowerCase().split(' ');
+            if(valueArr.length > 4) {
+              return false
+            }
+            if(valueArr[valueArr.length - 1].length > 15) {
+              return false
+            }
+              this.setState({
+                  [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "").toLowerCase()
+              }, () =>
+                  this.setState({
+                      tagList : this.getTagsArray(this.state.tag),
+                      tagError : false
+                  })
+              );
+
         } else
-        
+
         if (name == this.state.titleInputName) {
-            this.setState({ 
+            this.setState({
                 [name] : value,
                 titleError : false
             });
-        } else 
+        } else
 
         if (name == this.state.descriprionInputName) {
-            this.setState({ 
-                [name] : value
-            });
+          this.setState({
+            [name]: value
+          });
         }
     }
 
     getTagsArray(stringWithTags) {
-        return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/);
+        return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/)
     }
 
     validateFields() {
@@ -81,10 +92,10 @@ class CreatePost extends React.Component {
                 tagError: true
             })
             isValid = false;
-        } 
+        }
         if (this.state.title == '') {
             this.setState({
-               titleError: true 
+               titleError: true
             });
             isValid = false;
         }
@@ -103,7 +114,7 @@ class CreatePost extends React.Component {
         if (this.state.disabeleCreating) return false;
         if (!this.validateFields()) return false;
 
-        const callback = (err, success) => { 
+        const callback = (err, success) => {
             if (success) {
                 this.setState({
                     renderLoader : false
@@ -115,7 +126,7 @@ class CreatePost extends React.Component {
                 });
             } else {
                 jqApp.pushMessage.open(err);
-                this.setState({ 
+                this.setState({
                     renderLoader : false,
                 });
             }
@@ -152,12 +163,12 @@ class CreatePost extends React.Component {
 
     _getPostImageStyles(itemImage) {
         return {
-            backgroundImage: `url(${itemImage})`, 
-            backgroundPosition: 'fixed', 
-            backgroundRepeat: 'no-repeat', 
-            backgroundOrigin: 'center', 
-            backgroundClip: 'content-box', 
-            backgroundSize: 'cover', 
+            backgroundImage: `url(${itemImage})`,
+            backgroundPosition: 'fixed',
+            backgroundRepeat: 'no-repeat',
+            backgroundOrigin: 'center',
+            backgroundClip: 'content-box',
+            backgroundSize: 'cover',
             backgroundPosition: 'center'
         };
     }
@@ -188,7 +199,7 @@ class CreatePost extends React.Component {
         let _this = this;
         let items = this.state.tagList.map((tag, index) => {
             return(
-            <div key={index} className="tag">{tag}
+            <div key={index} className="tag">{`#${tag}`}
                 <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
             </div>
             )
@@ -221,7 +232,7 @@ class CreatePost extends React.Component {
         addDescriptionBlock =
         <div className="form-group">
             <div className="input-container col-xs-12">
-                <textarea type="text" 
+                <textarea type="text"
                     name={this.state.descriprionInputName}
                     id="description"
                     value={this.state.description}
@@ -273,7 +284,7 @@ class CreatePost extends React.Component {
                     <div className={this.state.titleError ? 'has-error' : ''} >
                         <div className="form-group">
                             <div className="input-container col-xs-12">
-                                <input id="formDESCRIPTION" 
+                                <input
                                     type="text"
                                     name={this.state.titleInputName}
                                     id="title"
@@ -289,14 +300,14 @@ class CreatePost extends React.Component {
                                         this.state.titleError ? <div className="help-block__notice">Title is required</div>
                                                               : null
                                     }
-                                </div>  
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className={this.state.tagError ? 'has-error' : ''} >
                         <div className="form-group">
                             <div className="input-container col-xs-12">
-                                <input type="text" 
+                                <input type="text"
                                     name={this.state.tagInputName}
                                     id="tag"
                                     value={this.state.tag}

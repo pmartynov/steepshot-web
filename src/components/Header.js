@@ -38,14 +38,14 @@ class Header extends React.Component {
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
     setTimeout(() => {
-      jqApp.search.init();  
+      jqApp.search.init();
     }, 0);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
     if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
-  
+
     return true;
   }
 
@@ -87,7 +87,6 @@ class Header extends React.Component {
     let browse;
     let authorLink = '';
 
-
     let loginComponent = <div className="section login">
       <div className="wrap-login">
         <Link to="/signin" className="btn btn-default btn-xs">
@@ -106,7 +105,7 @@ class Header extends React.Component {
       </div>
     }
 
- 
+
       browse = <div className="section menu">
         <div className="wrap-menu">
         {
@@ -114,14 +113,14 @@ class Header extends React.Component {
           <div className="item nav-item" ref="/feed">
             <Link to="/feed" >Feed</Link>
           </div>
-          ) : null 
+          ) : null
         }
           <div className="item nav-item" ref="/browse">
             <Link to={`/browse/${this.baseBrowseFilter()}`} >Browse</Link>
           </div>
         </div>
       </div>
-    
+
 
     return (
       <header className="g-header">
@@ -145,24 +144,24 @@ class Header extends React.Component {
               <div className="section create">
                 <div className="wrap-create">
                   {
-                    isUserAuth 
+                    isUserAuth
                     ?
                       <div>
                         <Link to="/createPost" type="button" className="btn btn-primary btn-xs btn-create">
                           Create post
                         </Link>
                         <Link to="/createPost" type="button" className="btn btn-primary btn-create-mob">
-                        </Link> 
+                        </Link>
                       </div>
                     :
-                      null
+                    null
                   }
                 </div>
               </div>
               <div className="section user">
                 <div className="wrap-user">
                   {
-                    this.props.user 
+                    this.props.user
                     ?
                       <Link to={authorLink} className="user-link clearfix">
                         <div className="photo">
@@ -202,14 +201,14 @@ class Header extends React.Component {
               </div>
               <div className="wrap-search">
                 <form className="form-search">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     name="search"
                     value={this.state.searchValue}
                     onChange={this.searchHandleChange.bind(this)}
                     required={true}
-                    placeholder={Constants.SEARCH_PLACEHOLDER} 
-                    className="input-search" 
+                    placeholder={Constants.SEARCH_PLACEHOLDER}
+                    className="input-search"
                     onKeyPress={this.searchKeyPress.bind(this)}
                   />
                 </form>

@@ -34,13 +34,13 @@ class Settings extends React.Component {
     componentDidMount() {
         const userSettings = getSettings();
 
-        this.setState({ 
+        this.setState({
             settings: userSettings
         });
     }
 
     _setDefaultMessageOptions() {
-        this.setState({ 
+        this.setState({
             success: false,
             uptodate: false
         });
@@ -84,12 +84,13 @@ class Settings extends React.Component {
         if (this.state.buttonDisabled) return false;
         if (JSON.stringify(this.state.saveSettings) != JSON.stringify(this.state.settings)) {
                 updateSettings(this.state.settings);
-                this.setState({ 
-                    success: true, 
+                this.setState({
+                    success: true,
                     saveSettings: getSettings()
                 }, () => this.needsNotice());
         } else {
             this.setState({ uptodate : true }, () => this.needsNotice());
+            
         }
     }
 

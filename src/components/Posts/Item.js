@@ -31,9 +31,10 @@ class Item extends React.Component {
       currentIndex: this.props.index,
       comments: [],
       redirectToReferrer: false,
-      needsRenderSlider: true
+      needsRenderSlider: true,
+      clearPropsHeader: this.props.clearPostHeader
     };
-    
+
     this.localConstants = {
        THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
     }
@@ -58,12 +59,12 @@ class Item extends React.Component {
     this.setState({
       item: propsItem,
       avatar: propsItem.avatar,
-      image: propsItem.body 
+      image: propsItem.body
     });
   }
 
   resetDefaultProperties(newItem) {
-    this.setState({ 
+    this.setState({
       avatar: newItem.avatar,
       image: newItem.body,
       item: newItem
@@ -89,12 +90,12 @@ class Item extends React.Component {
 
   _getPostImageStyles(itemImage) {
     return {
-      backgroundImage: `url(${itemImage})`, 
-      backgroundPosition: 'fixed', 
-      backgroundRepeat: 'no-repeat', 
-      backgroundOrigin: 'center', 
-      backgroundClip: 'content-box', 
-      backgroundSize: 'cover', 
+      backgroundImage: `url(${itemImage})`,
+      backgroundPosition: 'fixed',
+      backgroundRepeat: 'no-repeat',
+      backgroundOrigin: 'center',
+      backgroundClip: 'content-box',
+      backgroundSize: 'cover',
       backgroundPosition: 'center'
     };
   }
@@ -108,11 +109,11 @@ class Item extends React.Component {
   renderTags() {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
-        if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-        return <span><TagComponent tag={tag} key={index}/> </span>
+        return <span key={index}><TagComponent tag={tag}/> </span>
       });
     } else return null;
   }
+
 
   render() {
     let _this = this;
@@ -123,39 +124,46 @@ class Item extends React.Component {
     const authorLink = `/@${this.state.item.author}`;
     const cardPhotoStyles = {
       backgroundImage : 'url(' + itemImage + ')'
-    }
+    };
 
     return (
       <div className="item-wrap">
         <div className="post-card" >
-          <div className="card-head clearfix">
-            <div className="date">
-              <TimeAgo
-                datetime={this.state.item.created}
-                locale='en_US'
-              />
-            </div>
-            <Link to={authorLink} className="user">
-              <div className="photo">
-                <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
+          {
+            !this.state.clearPropsHeader
+              ?
+              <div className="card-head clearfix">
+                <div className="date">
+                  <TimeAgo
+                    datetime={this.state.item.created}
+                    locale='en_US'
+                  />
+                </div>
+                <Link to={authorLink} className="user">
+                  <div className="photo">
+                    <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
+                  </div>
+                  <div className="name">{this.state.item.author}</div>
+                </Link>
               </div>
-              <div className="name">{this.state.item.author}</div>
-            </Link>
-          </div>
-          <div className="card-body" >
+              :
+              null
+          }
+
+          <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
                 <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
               </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
                 <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                  <VouteComponent key="vote" 
+                  <VouteComponent key="vote"
                     item={this.state.item}
                     index={this.state.currentIndex}
                     updateVoteInComponent={this.props.updateVoteInComponent}
                     parent='post'
                   />
-                  <FlagComponent 
+                  <FlagComponent
                     key="flag"
                     item={this.state.item}
                     index={this.state.currentIndex}

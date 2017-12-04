@@ -39,10 +39,10 @@ class Login extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ 
+    this.setState({
       [event.target.name]: event.target.value,
       userNameError: false,
-      postingKeyError: false 
+      postingKeyError: false
     });
   }
 
@@ -77,7 +77,7 @@ class Login extends React.Component {
           jqApp.pushMessage.open(message);
         });
       }
-      
+
       login(this.state.userName, this.state.postingKey, this.props.history, this.props.dispatch, callback);
     });
   }
@@ -109,11 +109,11 @@ class Login extends React.Component {
   renderTutorVideo() {
     return (
       <div className="youtube-embed">
-        <iframe 
-          width="550" 
-          height="315" 
-          src={Constants.TUTORIAL.LINK} 
-          frameBorder="0" 
+        <iframe
+          width="550"
+          height="315"
+          src={Constants.TUTORIAL.LINK}
+          frameBorder="0"
           allowFullScreen
         >
         </iframe>
@@ -178,7 +178,7 @@ class Login extends React.Component {
                 <div className={this.state.postingKeyError ? "has-error" : null}>
                   <div className="form-group">
                     <div className="input-container col-xs-12">
-                      <input 
+                      <input
                         type="password"
                         name="postingKey"
                         id="formPOSTKEY"

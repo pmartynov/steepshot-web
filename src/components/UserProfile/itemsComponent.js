@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import LocalizedStrings from '../Localization/index.js';
-import { 
+import {
     getPosts
 } from '../../actions/posts';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ class ItemsComponent extends React.Component {
     super(props);
 
     this.state = {
+      ...this.getInitialData(),
       authorName : this.props.username,
       point : this.props.point,
       wrapperModifier : this.props.wrapperModifier,
@@ -28,9 +29,8 @@ class ItemsComponent extends React.Component {
       headerText : this.props.headerText,
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
-      maxPosts : this.props.maxPosts || 9999,
       ignored : this.props.ignored == undefined ? [] : this.props.ignored,
-      ...this.getInitialData()
+      maxPosts : this.props.maxPosts || 9999
     };
   }
 
@@ -54,7 +54,8 @@ class ItemsComponent extends React.Component {
       offset : null,
       items : [],
       hasMore : true,
-      previousRequestOffset : 'none'
+      previousRequestOffset : 'none',
+      clearPostHeader: this.props.clearPostHeader
     }
   }
 
@@ -73,7 +74,7 @@ class ItemsComponent extends React.Component {
     if (this.state.items.length > this.state.maxPosts - 1) {
       this.setState({ hasMore : false });
       return false;
-    } 
+    }
     const options = {
       point : this.state.point,
       params : Object.assign({}, {
@@ -81,33 +82,34 @@ class ItemsComponent extends React.Component {
       },
       this.state.options)
     };
+
     this.setState({
       previousRequestOffset : this.state.offset
     }, () => {
       this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
-          this.state.items.pop();
-          let newPosts = this.state.items.concat(response.results);
-          let hasMore = !(this.state.offset == response.offset) ;
+        this.state.items.pop();
+        let newPosts = this.state.items.concat(response.results);
+        let hasMore = !(this.state.offset == response.offset);
 
-          if (this.state.items.length + response.results.length == 0) hasMore = false;
-          this.setState({ 
-              items: newPosts,
-              offset: response.offset,
-              hasMore: hasMore,
-              loading : false
-          });
+        if (this.state.items.length + response.results.length == 0) hasMore = false;
+        this.setState({
+          items: newPosts,
+          offset: response.offset,
+          hasMore: hasMore,
+          loading: false
+        });
       });
     });
   }
 
   updateVoteInComponent(vote, index) {
     let newItems = this.state.items;
-    if (vote && newItems[index].flag) {
+     if (vote && newItems[index].flag) {
       newItems[index].flag = false;
     }
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     newItems[index].vote = vote;
-    this.setState({ 
+    this.setState({
       items: newItems
     });
   }
@@ -119,7 +121,7 @@ class ItemsComponent extends React.Component {
       newItems[index].vote = false;
     }
     newItems[index].flag = flag;
-    this.setState({ 
+    this.setState({
       items: newItems
     });
   }
@@ -127,9 +129,9 @@ class ItemsComponent extends React.Component {
   _renderModal() {
       if (this.state.currentItem != undefined)
       return (
-        <ItemModal 
-          item={this.state.items[this.state.currentItem]} 
-          items={this.state.items} 
+        <ItemModal
+          item={this.state.items[this.state.currentItem]}
+          items={this.state.items}
           index={this.state.currentItem}
           updateVoteInComponent={this.updateVoteInComponent.bind(this)}
           updateFlagInComponent={this.updateFlagInComponent.bind(this)}
@@ -168,6 +170,7 @@ class ItemsComponent extends React.Component {
             openModal={this.openModal.bind(this)}
             updateVoteInComponent={this.updateVoteInComponent.bind(this)}
             updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+            clearPostHeader={this.state.clearPostHeader}
           />
         );
       })
@@ -183,12 +186,12 @@ class ItemsComponent extends React.Component {
   }
 
   render() {
-    
+
     if (this.state.renderNotEmptyOnly && this.state.items.length == 0) return null;
 
     return (
-      <div> 
-        {this.renderHeader()} 
+      <div>
+        {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}

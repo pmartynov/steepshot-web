@@ -16,7 +16,7 @@ class UserItem extends React.Component {
       item: this.props.item,
       avatar: this.props.item.avatar,
       localize: LocalizedStrings.getInstance(),
-      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
+      showFollow: this.props.showFollow !== undefined ? this.props.showFollow  : true,
       items: []
     };
   }

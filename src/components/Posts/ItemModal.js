@@ -45,8 +45,7 @@ class ItemModal extends React.Component {
             needsCommentFormLoader : false,
             isLoading : false,
             hasMore : this.props.hasMore,
-            loadMore : this.props.loadMore,
-            isDescriptionOpened : false
+            loadMore : this.props.loadMore
         };
 
         this.initKeypress();
@@ -65,14 +64,14 @@ class ItemModal extends React.Component {
     }
 
     clearNewComment(callback) {
-      this.setState({ 
-        newComment : null 
+      this.setState({
+        newComment : null
       }, () => callback ? callback() : false);
     }
 
     componentWillReceiveProps(nextProps){
       let isLoading = this.state.isLoading;
-      if (isLoading) 
+      if (isLoading)
       if (this.state.items != nextProps.items) {
         isLoading = false;
       }
@@ -94,13 +93,14 @@ class ItemModal extends React.Component {
 
     componentDidMount() {
       this.needMore(this.props);
-      setTimeout(() => { 
+      setTimeout(() => {
         jqApp.forms.init();
       }, 0);
     }
 
     sendComment(e) {
       e.preventDefault();
+
       if (this.state.commentValue == "") return false;
 
       const urlObject = this.state.item.url.split('/');
@@ -111,7 +111,7 @@ class ItemModal extends React.Component {
         });
         if (err) {
           jqApp.pushMessage.open(err);
-        } else 
+        } else
         if (success) {
             this.setState({
               newComment : {
@@ -135,10 +135,10 @@ class ItemModal extends React.Component {
         needsCommentFormLoader : true
       }, () => {
         Steem.comment(
-          this.props.postingKey,             
-          this.state.item.author, 
-          urlObject[urlObject.length - 1], 
-          this.props.username, 
+          this.props.postingKey,
+          this.state.item.author,
+          urlObject[urlObject.length - 1],
+          this.props.username,
           this.state.commentValue,
           this.state.item.tags,
           callback
@@ -169,7 +169,7 @@ class ItemModal extends React.Component {
     }
 
     commentChanged(event) {
-      this.setState({ 
+      this.setState({
           commentValue : event.target.value
       });
     }
@@ -186,7 +186,7 @@ class ItemModal extends React.Component {
     }
 
     resetDefaultProperties(newItem, indexUpdater) {
-      this.setState({ 
+      this.setState({
           item: newItem,
           index: this.state.index + indexUpdater
       });
@@ -220,15 +220,14 @@ class ItemModal extends React.Component {
       if (text.length < 140) forceOpen = true;
       return (
         <div className="post-description">
-          <p>{this.state.item.title}</p>  
+          <p>{this.state.item.title}</p>
           <div
             className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
           >
               {this.state.item.description + ' '}
               {
                 this.state.item.tags.map((tag, index) => {
-                  if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-                  return <span><TagComponent tag={tag} key={index}/> </span>
+                  return <span key={index}><TagComponent tag={tag}/> </span>
                 })
               }
               <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -251,13 +250,13 @@ class ItemModal extends React.Component {
           <div className="post-single">
             <div className="post-wrap post">
               <div className="post__image-container position--relative">
-                <ShareComponent 
+                <ShareComponent
                     url={this.state.item.url}
                     title="Share post"
                     containerModifier="block--right-top box--small post__share-button"
                 />
-                <img src={itemImage} 
-                  alt="Post picture." 
+                <img src={itemImage}
+                  alt="Post picture."
                 />
               </div>
               <div className="post__description-container">
@@ -270,21 +269,21 @@ class ItemModal extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                    <AvatarComponent src={this.state.item.avatar} />
+                      <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                   </div>
                 </div>
                 <div className="post-controls clearfix">
                   <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                    <VouteComponent key="vote" 
+                    <VouteComponent
                       key="vote"
                       item={this.state.item}
                       index={this.state.index}
                       updateVoteInComponent={this.props.updateVoteInComponent}
                       parent='post'
                     />
-                    <FlagComponent 
+                    <FlagComponent
                       key="flag"
                       item={this.state.item}
                       index={this.state.index}
@@ -298,7 +297,7 @@ class ItemModal extends React.Component {
                     </div>
                   </div>
                 </div>
-                <ScrollViewComponent 
+                <ScrollViewComponent
                   ref={(ref) => this.scrollView = ref}
                   wrapperModifier="list-scroll"
                   scrollViewModifier="list-scroll__view"
@@ -314,15 +313,23 @@ class ItemModal extends React.Component {
                   isUserAuth
                   ?
                     <div className="post-comment">
-                      <form className="comment-form form-horizontal">
+                      <div className="comment-form form-horizontal">
                         <div className="form-group clearfix">
-                          <div className="btn-wrap">
-                            <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
-                          </div>
+                          {
+                            this.state.needsCommentFormLoader
+                            ?
+                              <div className="loaderInComments">
+                                <LoadingSpinner />
+                              </div>
+                              :
+                              <div className="btn-wrap">
+                                <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                              </div>
+                          }
                           <div className="input-container">
-                            <textarea 
+                            <textarea
                               ref="commentInput"
-                              id="formCOMMENT" 
+                              id="formCOMMENT"
                               name="commentValue"
                               value={this.state.commentValue}
                               maxLength={2048}
@@ -332,14 +339,7 @@ class ItemModal extends React.Component {
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>
                         </div>
-                      </form>
-                      {
-                        this.state.needsCommentFormLoader
-                        ?
-                          <LoadingSpinner />
-                        :
-                          null
-                      }
+                      </div>
                     </div>
                   :
                     null

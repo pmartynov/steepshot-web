@@ -87,6 +87,12 @@ export function login(username, postingKey, history, dispatch, callback) {
   });
 }
 
+function baseBrowseFilter() {
+  const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+  Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
+  return baseBrowseFilter;
+}
+
 export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
@@ -95,7 +101,7 @@ export function logout(history, dispatch) {
   dispatch({
     type: 'LOGOUT_SUCCESS'
   });
-  fakeAuth.signout(() => history.push('/browse'));
+  fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
 }
 
 export function updateProfile(state, token) {

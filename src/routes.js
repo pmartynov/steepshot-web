@@ -49,7 +49,7 @@ export default function getRoutes(store) {
           )
         )}/>
         <Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
-        <Route path="/browse" to={`/browse/${baseBrowseFilter()}`} />
+        <Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
         <Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
         <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />
