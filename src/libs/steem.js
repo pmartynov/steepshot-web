@@ -124,7 +124,6 @@ class Steem {
         };
 
         steem.api.getContentAsync(author, url).then((response) => {
-            console.log(steem.broadcast.vote);
             steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
         });
     }
@@ -216,6 +215,19 @@ class Steem {
     }
 
     /** Broadcast a post */
+
+    deletePost(wif, author, permlink, callback) {
+      const callbackBc = (err, success) => {
+        if (err) {
+          callback(err, null);
+        } else if (success) {
+          // logDeletedPost(); loggin deleted posts
+          callback(null, success);
+        }
+      };
+      steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
+    }
+
     createPost(wif, tags, author, title, description, file, callback) {
         const permlink = this._getPermLink();
         const operation = [constants.OPERATIONS.COMMENT, {

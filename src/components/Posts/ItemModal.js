@@ -22,6 +22,7 @@ import FullScreenFunctional from './FullScreenButtons/FullScreenFunctional';
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
 import { UserLinkFunc } from '../Common/UserLinkFunc';
+import PostContextMenu from '../PostContextMenu/PostContextMenu';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const START_TEXTAREA_WIDTH = '280px';
@@ -555,6 +556,11 @@ class ItemModal extends React.Component {
                   :
                     <div className="user-wrap clearfix">
                       <div className="date">
+                        <PostContextMenu style={{float: 'left', height: '22px'}}
+                                         item={this.props.item}
+                                         index={this.props.index}
+                                         updateFlagInComponent={this.props.updateFlagInComponent}
+                        />
                         <TimeAgo
                           datetime={this.state.item.created}
                           locale='en_US'

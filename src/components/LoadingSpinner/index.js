@@ -10,7 +10,8 @@ class LoadingSpinner extends Component {
     return (
       this.props.show ?
         <div className="loader-blocker">
-          <div className="loader"></div>
+          <div className="testLoader1"/>
+          <div className="testLoader2"/>
         </div>
         :
         null

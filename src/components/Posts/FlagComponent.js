@@ -21,10 +21,10 @@ class FlagComponent extends React.Component {
     if (this.props.options[this.props.postIndex].isFlagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    
+
     return (
         <div className="wrap-btn" onClick={this.updateFlag.bind(this)}>
-          <button type="button" className={buttonClasses}></button>
+          <button type="button" className={buttonClasses}/>
         </div>
     );
   }

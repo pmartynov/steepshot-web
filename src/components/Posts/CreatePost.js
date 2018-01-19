@@ -125,7 +125,6 @@ class CreatePost extends React.Component {
       if (success) {
         this.setState({
           renderLoader: false,
-
         }, () => {
           jqApp.pushMessage.open(
             'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
@@ -262,8 +261,7 @@ class CreatePost extends React.Component {
     let items = this.state.tagList.map((tag, index) => {
       return (
         <div key={index} className="tag">{tag}
-          <button type="button" className="btn-close"
-                  onClick={this.removeTag.bind(_this, index)}></button>
+          <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}/>
         </div>
       );
     });
