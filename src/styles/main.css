@@ -153,28 +153,6 @@ input.autofil--gray:-webkit-autofill {
   text-align: center;
 }
 
-.loader-blocker{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-}
-
-.loader {
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #e74800;
-  width: 40px;
-  height: 40px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
 .loaderInComments {
   position: absolute;
   right: 14px;
@@ -182,6 +160,7 @@ input.autofil--gray:-webkit-autofill {
   width: 40px;
   height: 40px;
 }
+
 input {
   outline: none;
 }
@@ -202,23 +181,23 @@ input {
   box-shadow: none;
 }
 
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
+/*@-webkit-keyframes spin {*/
+  /*0% {*/
+    /*-webkit-transform: scale(0);*/
+  /*}*/
+  /*100% {*/
+    /*-webkit-transform: scale(1);*/
+  /*}*/
+/*}*/
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+/*@keyframes spin {*/
+  /*0% {*/
+    /*transform: scale(0);*/
+  /*}*/
+  /*100% {*/
+    /*transform: scale(1);*/
+  /*}*/
+/*}*/
 
 button {
   outline: none !important;
@@ -1155,4 +1134,45 @@ h2.card-field__heading {
 .rotate-button {
   position: relative;
   height: 150px;
+}
+
+
+
+.loader-blocker{
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.testLoader1 {
+  background: url('../../static/images/bitmap3x.png') no-repeat;
+  width: 40px;
+  height: 34px;
+  animation: scaled 1.65s ease-out infinite;
+}
+.testLoader2 {
+  position: absolute;
+  background: url('../../static/images/bitmaparrow3x.png') no-repeat;
+  width: 22px;
+  height: 22px;
+  top: 9px;
+  animation: arrow 1.65s ease-out infinite;
+}
+
+@keyframes scaled {
+  0%   { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes arrow {
+  0% { transform: rotate(0deg) scale(0)}
+  55% { transform: rotate(-1130deg) scale(0.7)}
+  80% { transform: rotate(-1080deg) scale(1)}
+  100% { transform: rotate(-1080deg) scale(1) }
 }

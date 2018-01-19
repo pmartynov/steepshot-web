@@ -59,7 +59,6 @@ export default function flag(state = initialState, action) {
       return Object.assign({}, state, {
         updateFlagInComponent: action.func
       });
-
     default:
       return state;
   }

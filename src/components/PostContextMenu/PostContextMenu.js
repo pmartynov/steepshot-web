@@ -4,8 +4,9 @@ import Modal from '../Common/Modal/Modal';
 import Menu from './Menu/Menu';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
-import {toggleFlag,} from '../../actions/flag';
-import {copyToClipboard} from "../../actions/clipboard";
+import {toggleFlag} from '../../actions/flag';
+import {copyToClipboard} from '../../actions/clipboard';
+import {deletePost} from '../../actions/post';
 
 const MIN_BUTTON_WIDTH = 90;
 const MAX_BUTTON_SIZE = 100;
@@ -85,7 +86,8 @@ class PostContextMenu extends React.Component {
   }
 
   deletePost() {
-
+    this.props.deletePost(this.props.index);
+    this.closeFunc();
   }
 
   editPost() {
@@ -173,14 +175,14 @@ class PostContextMenu extends React.Component {
     let tmp;
     if (this.props.item.author == this.props.username) {
       tmp = [
-        /*TODO uncomment when will be implemented delete
         {
           img: '/static/images/postContextMenu/deleteTrue.svg',
           revertImg: '/static/images/postContextMenu/deleteFalse.svg',
           alt: 'Delete',
           callback: this.deletePost.bind(this),
           hasDelimiter: true,
-        }, *//* TODO uncomment when will be implemented edit post
+        }
+      /* TODO uncomment when will be implemented edit post
         {
           img: '/static/images/postContextMenu/editTrue.svg',
           revertImg: '/static/images/postContextMenu/editFalse.svg',
@@ -227,6 +229,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     copyToClipboard: (text) => {
       dispatch(copyToClipboard(text));
+    },
+    deletePost: (postIndex) => {
+      dispatch(deletePost(postIndex));
     }
   }
 };

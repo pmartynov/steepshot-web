@@ -25,7 +25,7 @@
   margin: 0;
   padding: 0 16px 0 10px;
 }
-.button_fsf:last-child .text_fsf {
+.button_fsf_esc .text_fsf {
   padding-right: 0;
 }
 
