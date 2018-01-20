@@ -181,23 +181,23 @@ input {
   box-shadow: none;
 }
 
-/*@-webkit-keyframes spin {*/
-  /*0% {*/
-    /*-webkit-transform: scale(0);*/
-  /*}*/
-  /*100% {*/
-    /*-webkit-transform: scale(1);*/
-  /*}*/
-/*}*/
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
 
-/*@keyframes spin {*/
-  /*0% {*/
-    /*transform: scale(0);*/
-  /*}*/
-  /*100% {*/
-    /*transform: scale(1);*/
-  /*}*/
-/*}*/
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 button {
   outline: none !important;
@@ -311,7 +311,7 @@ h2.card-field__heading {
   -webkit-transform: scale(1.15);
 }
 
-.post__image-container .full-screen_item-mod {
+ .full-screen_item-mod {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -323,12 +323,22 @@ h2.card-field__heading {
   opacity: 0;
 }
 
+.outer-full-screen_item-mod {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .post__image-container .full-screen_item-mod1 {
   background: url(/static/images/shape.svg) #000000 no-repeat center;
   background-size: 16px;
 }
-.post__image-container .full-screen_item-mod2 {
-  background: url(/static/images/shape-copy-6.svg) #000000 no-repeat center;
+.full-screen_item-mod2 {
+  background: url(/static/images/shape-copy-6.svg) no-repeat center;
   background-size: 20px;
 }
 .full-screen_item-mod1:hover {
@@ -1150,13 +1160,13 @@ h2.card-field__heading {
   z-index: 3;
 }
 
-.testLoader1 {
+.newLoaderOuter {
   background: url('../../static/images/bitmap3x.png') no-repeat;
   width: 40px;
   height: 34px;
   animation: scaled 1.65s ease-out infinite;
 }
-.testLoader2 {
+.newLoaderInner {
   position: absolute;
   background: url('../../static/images/bitmaparrow3x.png') no-repeat;
   width: 22px;
@@ -1166,13 +1176,14 @@ h2.card-field__heading {
 }
 
 @keyframes scaled {
-  0%   { transform: scale(0); }
-  100% { transform: scale(1); }
+  0% { transform: scale(0); opacity: 0 }
+  30% { transform: scale(0.3); opacity: 0 }
+  100% { transform: scale(1); opacity: 1 }
 }
 
 @keyframes arrow {
   0% { transform: rotate(0deg) scale(0)}
   55% { transform: rotate(-1130deg) scale(0.7)}
-  80% { transform: rotate(-1080deg) scale(1)}
+  85% { transform: rotate(-1080deg) scale(1)}
   100% { transform: rotate(-1080deg) scale(1) }
 }

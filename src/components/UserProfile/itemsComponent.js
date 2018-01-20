@@ -85,6 +85,10 @@ class ItemsComponent extends React.Component {
     });
   }
 
+  backModal() {
+    this.setState({customFullScreen: true});
+  }
+
   fetchData() {
     if (this.state.offset == this.state.previousRequestOffset || !this.state.hasMore) return false;
     if (!this.state.isComponentVisible && this.state.offset != undefined) return false;
@@ -196,6 +200,7 @@ class ItemsComponent extends React.Component {
             hasMore={this.state.hasMore}
             fullParam={this.fullParam.bind(this)}
             closeFunc={this.closeFunc.bind(this)}
+            fullCallBack={this.state.customFullScreen}
           />
         );
       }
@@ -266,6 +271,7 @@ class ItemsComponent extends React.Component {
           closeButton={true}
           fullParam={this.state.customFullScreen}
           styles={'container_mod mobile-modal'}
+          backModal={this.backModal.bind(this)}
         >
           {this._renderModal()}
         </Modal>

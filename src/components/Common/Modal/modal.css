@@ -14,8 +14,8 @@
 }
 
 .container_mod {
-  background-color: #fff;
   border-radius: 4px;
+  min-width: 352px;
 }
 
 .container-full-screen_mod {
@@ -27,8 +27,8 @@
 
 .close_mod {
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: 16px;
+  right: 20px;
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -49,9 +49,4 @@
     min-width: 100vw;
   }
 }
-@media screen and (min-width: 1024px) {
-  .close_mod {
-    top: 12px;
-    right: 12px;
-  }
-}
+

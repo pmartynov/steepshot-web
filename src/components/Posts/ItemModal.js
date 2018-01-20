@@ -26,8 +26,8 @@ import PostContextMenu from '../PostContextMenu/PostContextMenu';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const START_TEXTAREA_WIDTH = '280px';
-const START_BUTTON_OFFSET = '20px';
-const START_SHARE_OFFSET = '0';
+// const START_BUTTON_OFFSET = '20px';
+// const START_SHARE_OFFSET = '0';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -58,8 +58,8 @@ class ItemModal extends React.Component {
             fullScreenMode : true,
             noFullScreen : true,
             commentValue : '',
-            buttonOffset : START_BUTTON_OFFSET,
-            shareOffset : START_SHARE_OFFSET,
+            // buttonOffset : START_BUTTON_OFFSET,
+            // shareOffset : START_SHARE_OFFSET,
             enterLike : false
         };
         this.mobileCoverParams = {
@@ -82,25 +82,25 @@ class ItemModal extends React.Component {
       }
     }
 
-    controlFullScreenButtons() {
-      if(!this.state.fullScreenMode) {
-        if(this.fullScreenWrapper.clientWidth != this.imgContainer.clientWidth) {
-          let fullScreenWidth = this.fullScreenWrapper.clientWidth;
-          let imgContWidth = this.imgContainer.clientWidth;
-          let hideWidth = fullScreenWidth - imgContWidth;
-          if(hideWidth > 0) {
-            let countButtonOffset = (hideWidth/2 + 20) + 'px';
-            let countShareOffset = (hideWidth/2) + 'px';
-            this.setState({buttonOffset : countButtonOffset, shareOffset : countShareOffset});
-          }
-        } else {
-          this.setState({buttonOffset : START_BUTTON_OFFSET, shareOffset : START_SHARE_OFFSET});
-        }
-      }
-    }
+    // controlFullScreenButtons() {
+    //   if(!this.state.fullScreenMode) {
+    //     if(this.fullScreenWrapper.clientWidth != this.imgContainer.clientWidth) {
+    //       let fullScreenWidth = this.fullScreenWrapper.clientWidth;
+    //       let imgContWidth = this.imgContainer.clientWidth;
+    //       let hideWidth = fullScreenWidth - imgContWidth;
+    //       if(hideWidth > 0) {
+    //         let countButtonOffset = (hideWidth/2 + 20) + 'px';
+    //         let countShareOffset = (hideWidth/2) + 'px';
+    //         this.setState({buttonOffset : countButtonOffset, shareOffset : countShareOffset});
+    //       }
+    //     } else {
+    //       this.setState({buttonOffset : START_BUTTON_OFFSET, shareOffset : START_SHARE_OFFSET});
+    //     }
+    //   }
+    // }
 
     controlRestrictions(param) {
-      this.controlFullScreenButtons();
+      // this.controlFullScreenButtons();
       if(param) {
         this.setState({adultParam : false, lowParam : false});
       } else {
@@ -180,6 +180,11 @@ class ItemModal extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+      if(nextProps.fullCallBack) {
+        this.setState({fullScreenMode: true}, () => {
+          this.closeFull(false);
+        });
+      }
       let isLoading = this.state.isLoading;
       if (isLoading)
       if (this.state.items != nextProps.items) {
@@ -209,7 +214,7 @@ class ItemModal extends React.Component {
       }, 0);
       this.closeButtonFunc();
       window.addEventListener('resize', () => {
-        this.controlFullScreenButtons();
+        // this.controlFullScreenButtons();
         this.closeButtonFunc();
       });
     }
@@ -397,9 +402,26 @@ class ItemModal extends React.Component {
       }
     }
 
+    closeFull(param) {
+      if (this.state.commentValue) {
+        this.label.style.top = '-12px';
+        this.commentInput.value = this.state.commentValue;
+        this.sendButton.classList.add('send-button_item-mod');
+      }
+      if (param) {
+        this.props.fullParam(this.state.fullScreenMode);
+      }
+      this.descriptionCont.classList.remove('hideDescCont');
+      this.img.classList.remove('post__image-container-full-screen-img');
+      this.imgContainer.classList.remove('post__image-container-full-screen');
+      this.imgContainer.style.background = '#fafafa';
+      this.setState({commentValue : ''});
+    }
+
     fullScreen() {
       if(this.state.fullScreenMode && this.state.noFullScreen) {
-        this.setState({commentValue : this.commentInput.value, fullScreenMode : false}, () => {
+        let commentInput = this.commentInput ? this.commentInput.value : '';
+        this.setState({commentValue : commentInput, fullScreenMode : false}, () => {
           this.descriptionCont.classList.add('hideDescCont');
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.add('post__image-container-full-screen-img');
@@ -408,17 +430,7 @@ class ItemModal extends React.Component {
         });
       } else {
         this.setState({fullScreenMode : true}, () => {
-          if (this.state.commentValue) {
-            this.label.style.top = '-12px';
-            this.commentInput.value = this.state.commentValue;
-            this.sendButton.classList.add('send-button_item-mod');
-          }
-          this.props.fullParam(this.state.fullScreenMode);
-          this.descriptionCont.classList.remove('hideDescCont');
-          this.img.classList.remove('post__image-container-full-screen-img');
-          this.imgContainer.classList.remove('post__image-container-full-screen');
-          this.imgContainer.style.background = '#fafafa';
-          this.setState({commentValue : ''});
+          this.closeFull(true);
         });
       }
     }
@@ -519,21 +531,14 @@ class ItemModal extends React.Component {
                             <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                           </div>
                         :
-                          <div className="position--relative" ref={ref => {this.fullScreenWrapper = ref}}>
-                            <ShareComponent
-                              moneyParam={this.state.moneyParam}
-                              url={this.state.item.url}
-                              title="Share post"
-                              containerModifier="block--right-top box--small post__share-button"
-                              offset={this.state.shareOffset}
-                            />
-                            <div title="Modal screen"
-                                 className="full-screen_item-mod full-screen_item-mod2"
-                                 onClick={this.fullScreen.bind(this)}
-                                 style={{right : this.state.buttonOffset}}
-                            />
+                          <div>
+                            {/*<div title="Modal screen"*/}
+                                 {/*className="full-screen_item-mod full-screen_item-mod2"*/}
+                                 {/*onClick={this.fullScreen.bind(this)}*/}
+                                 {/*// style={{right : this.state.buttonOffset}}*/}
+                            {/*/>*/}
                             <FullScreenFunctional
-                              offset={this.state.buttonOffset}
+                              // offset={this.state.buttonOffset}
                               next={this.next.bind(this)}
                               prev={this.previous.bind(this)}
                               like={this.likeFullScreen.bind(this)}

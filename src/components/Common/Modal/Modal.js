@@ -52,10 +52,16 @@ class Modal extends React.Component {
     if (this.wrapper) {
       if (this.props.fullParam) {
         this.wrapper.style.backgroundColor = 'rgba(0, 0, 0, .7)';
+        this.modalContainer.style.backgroundColor = '#ffffff';
       } else {
         this.wrapper.style.backgroundColor = 'rgba(0, 0, 0, 1)';
+        this.modalContainer.style.backgroundColor = 'black';
       }
     }
+  }
+
+  backModal() {
+    this.props.backModal();
   }
 
   render() {
@@ -73,6 +79,12 @@ class Modal extends React.Component {
                 <ShowIf show={this.props.closeButton}>
                   <button className="close_mod" onClick={this.props.closeFunc.bind(this)} />
                 </ShowIf>
+              </ShowIf>
+              <ShowIf show={!this.props.fullParam}>
+                <div title="Modal screen"
+                     className="outer-full-screen_item-mod full-screen_item-mod2"
+                     onClick={this.backModal.bind(this)}
+                />
               </ShowIf>
               <div className={this.props.styles}
                    ref={ ref => {this.modalContainer = ref} }

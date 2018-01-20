@@ -3,9 +3,9 @@
   color: #ffffff;
   font: 12px OpenSans;
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: black;
+  bottom: 1%;
+  left: 50%;
+  transform: translate(-50%, -1%);
   border-radius: 4px;
   padding: 8px;
   justify-content: center;
@@ -49,7 +49,6 @@
   height: 22px;
   background: url(/static/images/arrow-right.svg);
 }
-
 
 
 .post__image-container .buttons-wrapper_fsf {
