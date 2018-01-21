@@ -60,7 +60,8 @@ class ItemModal extends React.Component {
             commentValue : '',
             // buttonOffset : START_BUTTON_OFFSET,
             // shareOffset : START_SHARE_OFFSET,
-            enterLike : false
+            enterLike : false,
+            testParam: false
         };
         this.mobileCoverParams = {
           width: '100%',
@@ -100,7 +101,6 @@ class ItemModal extends React.Component {
     // }
 
     controlRestrictions(param) {
-      // this.controlFullScreenButtons();
       if(param) {
         this.setState({adultParam : false, lowParam : false});
       } else {
@@ -403,6 +403,10 @@ class ItemModal extends React.Component {
     }
 
     closeFull(param) {
+      window.removeEventListener('mousemove', () => {
+        this.showButtons();
+      });
+      this.setState({hideFullScreenButtons: true});
       if (this.state.commentValue) {
         this.label.style.top = '-12px';
         this.commentInput.value = this.state.commentValue;
@@ -420,6 +424,10 @@ class ItemModal extends React.Component {
 
     fullScreen() {
       if(this.state.fullScreenMode && this.state.noFullScreen) {
+        window.addEventListener('mousemove', () => {
+          this.showButtons();
+        });
+        this.testFunc();
         let commentInput = this.commentInput ? this.commentInput.value : '';
         this.setState({commentValue : commentInput, fullScreenMode : false}, () => {
           this.descriptionCont.classList.add('hideDescCont');
@@ -442,6 +450,17 @@ class ItemModal extends React.Component {
       if (this.commentInput.value == '') {
         this.label.style.top = '12px';
       }
+    }
+
+    testFunc() {
+      setTimeout( () => {
+        this.setState({testParam: false});
+      }, 5000);
+    }
+
+    showButtons() {
+      this.testFunc();
+      this.setState({testParam: true});
     }
 
     render() {
@@ -528,25 +547,30 @@ class ItemModal extends React.Component {
                               containerModifier="block--right-top box--small post__share-button"
                             />
                             <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}/>
-                            <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                            <img src={itemImage}
+                                 alt="Post picture."
+                                 ref={ ref => {this.img = ref} }
+                                 onDoubleClick={this.fullScreen.bind(this)}
+                            />
                           </div>
                         :
                           <div>
-                            {/*<div title="Modal screen"*/}
-                                 {/*className="full-screen_item-mod full-screen_item-mod2"*/}
-                                 {/*onClick={this.fullScreen.bind(this)}*/}
-                                 {/*// style={{right : this.state.buttonOffset}}*/}
-                            {/*/>*/}
-                            <FullScreenFunctional
-                              // offset={this.state.buttonOffset}
-                              next={this.next.bind(this)}
-                              prev={this.previous.bind(this)}
-                              like={this.likeFullScreen.bind(this)}
-                              item={this.state.item}
-                              index={this.state.index}
-                              number={this.state.items.length}
-                            />
-                            <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                            <ShowIf show={this.state.testParam}>
+                              <FullScreenFunctional
+                                // offset={this.state.buttonOffset}
+                                next={this.next.bind(this)}
+                                prev={this.previous.bind(this)}
+                                like={this.likeFullScreen.bind(this)}
+                                item={this.state.item}
+                                index={this.state.index}
+                                number={this.state.items.length}
+                              />
+                            </ShowIf>
+                              <img src={itemImage}
+                                   alt="Post picture."
+                                   ref={ ref => {this.img = ref} }
+                                   onDoubleClick={this.fullScreen.bind(this)}
+                              />
                           </div>
                       }
                     </ShowIf>

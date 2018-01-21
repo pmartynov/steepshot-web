@@ -51,10 +51,9 @@
 }
 
 
-.post__image-container .buttons-wrapper_fsf {
-  transition: .3s opacity ease;
-  opacity: 0;
-}
-.post__image-container:hover .buttons-wrapper_fsf {
-  opacity: 1;
-}
+/*.post__image-container .buttons-wrapper_fsf {*/
+  /*display: none;*/
+/*}*/
+/*.post__image-container:hover .buttons-wrapper_fsf {*/
+  /*display: flex;*/
+/*}*/
