@@ -61,12 +61,13 @@ class ItemModal extends React.Component {
             // buttonOffset : START_BUTTON_OFFSET,
             // shareOffset : START_SHARE_OFFSET,
             enterLike : false,
-            testParam: false
+            testParam: true
         };
         this.mobileCoverParams = {
           width: '100%',
           height: '100%'
         };
+        this.showButtons = this.showButtons.bind(this);
         this.initKeypress();
     }
 
@@ -403,10 +404,6 @@ class ItemModal extends React.Component {
     }
 
     closeFull(param) {
-      window.removeEventListener('mousemove', () => {
-        this.showButtons();
-      });
-      this.setState({hideFullScreenButtons: true});
       if (this.state.commentValue) {
         this.label.style.top = '-12px';
         this.commentInput.value = this.state.commentValue;
@@ -419,17 +416,19 @@ class ItemModal extends React.Component {
       this.img.classList.remove('post__image-container-full-screen-img');
       this.imgContainer.classList.remove('post__image-container-full-screen');
       this.imgContainer.style.background = '#fafafa';
-      this.setState({commentValue : ''});
+      this.setState({commentValue : '', testParam: true});
+      this.clearTimeoutFunc();
+      console.log(this.timeout);
+      document.body.style.cursor = 'default';
+      window.removeEventListener('mousemove', this.showButtons);
     }
 
     fullScreen() {
       if(this.state.fullScreenMode && this.state.noFullScreen) {
-        window.addEventListener('mousemove', () => {
-          this.showButtons();
-        });
-        this.testFunc();
         let commentInput = this.commentInput ? this.commentInput.value : '';
         this.setState({commentValue : commentInput, fullScreenMode : false}, () => {
+          window.addEventListener('mousemove', this.showButtons);
+          this.testTimeout();
           this.descriptionCont.classList.add('hideDescCont');
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.add('post__image-container-full-screen-img');
@@ -452,15 +451,25 @@ class ItemModal extends React.Component {
       }
     }
 
-    testFunc() {
-      setTimeout( () => {
-        this.setState({testParam: false});
-      }, 5000);
+    testTimeout() {
+      if (!this.timeout) {
+        this.timeout = window.setTimeout( () => {
+          this.setState({testParam: false});
+          document.body.style.cursor = 'none';
+          this.clearTimeoutFunc();
+        }, 5000);
+      }
+    }
+
+    clearTimeoutFunc = () => {
+      window.clearTimeout(this.timeout);
     }
 
     showButtons() {
-      this.testFunc();
-      this.setState({testParam: true});
+      document.body.style.cursor = 'default';
+      this.setState({testParam: true}, () => {
+        this.testTimeout();
+      });
     }
 
     render() {

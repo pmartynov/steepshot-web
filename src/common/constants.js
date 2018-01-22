@@ -1,7 +1,7 @@
 export default {
     URLS: {
-        baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
-        baseUrl_v1: 'https://steepshot.org/api/v1',
+        baseUrl_v1_1: 'https://qa.steepshot.org/api/v1_1',
+        baseUrl_v1: 'https://qa.steepshot.org/api/v1',
     },
     CATEGORIES: {
         user: 'user',
