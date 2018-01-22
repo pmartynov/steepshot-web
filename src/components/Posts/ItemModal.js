@@ -486,18 +486,122 @@ class ItemModal extends React.Component {
       window.addEventListener('mousemove', this.showButtons);
     }
 
-    render() {
-      let itemImage = this.state.item.body || constants.NO_IMAGE;
-      let isUserAuth = (this.props.username && this.props.postingKey);
-      const authorLink = `/@${this.state.item.author}`;
+  render() {
+    let itemImage = this.state.item.body || constants.NO_IMAGE;
+    let isUserAuth = (this.props.username && this.props.postingKey);
+    const authorLink = `/@${this.state.item.author}`;
 
-      return(
-        <div>
-          <div className="post-single">
-            {
-              this.state.closeParam
-                ?
-                <div className="crossWrapper">
+    return(
+      <div>
+        <div className="post-single">
+          {
+            this.state.closeParam
+              ?
+              <div className="crossWrapper">
+                <div className="user-wrap clearfix">
+                  <div className="date">
+                    <TimeAgo
+                      datetime={this.state.item.created}
+                      locale='en_US'
+                    />
+                  </div>
+                  <Link to={authorLink} className="user">
+                    <AvatarComponent src={this.state.item.avatar} />
+                    <div className="name">{this.state.item.author}</div>
+                  </Link>
+                  <div onClick={this.props.closeFunc.bind(this)} className="modalButtonWrapper">
+                    <i className="modalButton" />
+                  </div>
+                </div>
+              </div>
+              :
+              null
+          }
+          <div className="post-wrap post">
+            <div className="post__image-container position--relative" ref={ ref => {this.imgContainer = ref} }>
+              {
+                this.state.adultParam
+                  ?
+                  <div style={this.mobileCoverParams}>
+                    <div className="forAdult2">
+                      <div className="forAdultInner">
+                        <p className="par1">NSFW content</p>
+                        <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
+                        <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                      </div>
+                    </div>
+                    <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                  </div>
+                  :
+                  this.state.lowParam
+                    ?
+                    <div style={this.mobileCoverParams}>
+                      <div className="forAdult2">
+                        <div className="forAdultInner">
+                          <p className="par1">Low rated content</p>
+                          <p className="par2">This content is hidden due to low ratings.</p>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                        </div>
+                      </div>
+                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                    </div>
+                    :
+                    <div>
+                      <ShowIf show={!this.state.noFullScreen}>
+                        <div>
+                          <ShareComponent
+                            moneyParam={this.state.moneyParam}
+                            url={this.state.item.url}
+                            title="Share post"
+                            containerModifier="block--right-top box--small post__share-button"
+                          />
+                          <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } />
+                        </div>
+                      </ShowIf>
+                      <ShowIf show={this.state.noFullScreen}>
+                        {
+                          this.state.fullScreenMode
+                            ?
+                            <div>
+                              <ShareComponent
+                                moneyParam={this.state.moneyParam}
+                                url={this.state.item.url}
+                                title="Share post"
+                                containerModifier="block--right-top box--small post__share-button"
+                              />
+                              <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}/>
+                              <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                            </div>
+                            :
+                            <div>
+                              <ShowIf show={this.state.fullScreenBtns}>
+                                <div onMouseEnter={this.buttonsMouseEnter.bind(this)}
+                                     onMouseLeave={this.buttonsMouseLeave.bind(this)}
+                                >
+                                  <FullScreenFunctional
+                                    //offset={this.state.buttonOffset}
+                                    next={this.next.bind(this)}
+                                    prev={this.previous.bind(this)}
+                                    like={this.likeFullScreen.bind(this)}
+                                    item={this.state.item}
+                                    index={this.state.index}
+                                    number={this.state.items.length}
+                                  />
+                                </div>
+                              </ShowIf>
+                              <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                            </div>
+                        }
+                      </ShowIf>
+                    </div>
+              }
+            </div>
+            <div className="post__description-container" ref={ ref => {this.descriptionCont = ref} }>
+              {
+                this.state.closeParam
+                  ?
+                  null
+                  :
                   <div className="user-wrap clearfix">
                     <div className="date">
                       <TimeAgo
@@ -509,184 +613,69 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
-                    <div onClick={this.props.closeFunc.bind(this)} className="modalButtonWrapper">
-                      <i className="modalButton" />
-                    </div>
                   </div>
-                </div>
-                :
-                this.state.adultParam
-                ?
-                <div style={this.mobileCoverParams}>
-                  <div className="forAdult2">
-                    <div className="forAdultInner">
-                      <p className="par1">NSFW content</p>
-                      <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
-                      <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
-                    </div>
-                  </div>
-                <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
-                </div>
-                :
-                this.state.lowParam
-                ?
-                <div style={this.mobileCoverParams}>
-                  <div className="forAdult2">
-                    <div className="forAdultInner">
-                    <p className="par1">Low rated content</p>
-                    <p className="par2">This content is hidden due to low ratings.</p>
-                  <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
-                </div>
-                  </div>
-                  <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
-                </div>
-                :
-                null
-            }
-            <div className="post-wrap post">
-              <div className="post__image-container position--relative" ref={ ref => {this.imgContainer = ref} }>
-                    <div>
-                    <ShowIf show={!this.state.noFullScreen}>
-                      <div>
-                        <ShareComponent
-                          moneyParam={this.state.moneyParam}
-                          url={this.state.item.url}
-                          title="Share post"
-                          containerModifier="block--right-top box--small post__share-button"
-                        />
-                        <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } />
-                      </div>
-                    </ShowIf>
-                    <ShowIf show={this.state.noFullScreen}>
-                      {
-                        this.state.fullScreenMode
-                        ?
-                          <div>
-                            <ShareComponent
-                              moneyParam={this.state.moneyParam}
-                              url={this.state.item.url}
-                              title="Share post"
-                              containerModifier="block--right-top box--small post__share-button"
-                            />
-                            <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}/>
-                            <img src={itemImage}
-                                 alt="Post picture."
-                                 ref={ ref => {this.img = ref} }
-                                 onDoubleClick={this.fullScreen.bind(this)}
-                            />
-                          </div>
-                        :
-                          <div>
-                            <ShowIf show={this.state.fullScreenBtns}>
-                              <div onMouseEnter={this.buttonsMouseEnter.bind(this)}
-                                   onMouseLeave={this.buttonsMouseLeave.bind(this)}
-                              >
-                                <FullScreenFunctional
-                                  // offset={this.state.buttonOffset}
-                                  next={this.next.bind(this)}
-                                  prev={this.previous.bind(this)}
-                                  like={this.likeFullScreen.bind(this)}
-                                  item={this.state.item}
-                                  index={this.state.index}
-                                  number={this.state.items.length}
-                                />
-                              </div>
-                            </ShowIf>
-                              <img src={itemImage}
-                                   alt="Post picture."
-                                   ref={ ref => {this.img = ref} }
-                                   onDoubleClick={this.fullScreen.bind(this)}
-                              />
-                          </div>
-                      }
-                    </ShowIf>
-                    </div>
-              </div>
-              <div className="post__description-container" ref={ ref => {this.descriptionCont = ref} }>
-                {
-                  this.state.closeParam
-                  ?
-                    null
-                  :
-                    <div className="user-wrap clearfix">
-                      <div className="date">
-                        <PostContextMenu style={{float: 'left', height: '22px'}}
-                                         item={this.props.item}
-                                         index={this.props.index}
-                                         updateFlagInComponent={this.props.updateFlagInComponent}
-                        />
-                        <TimeAgo
-                          datetime={this.state.item.created}
-                          locale='en_US'
-                        />
-                      </div>
-                      <Link to={authorLink} className="user">
-                        <AvatarComponent src={this.state.item.avatar} />
-                        <div className="name">{this.state.item.author}</div>
-                      </Link>
-                    </div>
-                }
-                <div className="post-controls clearfix">
-                  <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                    <VouteComponent
-                      key='vote'
-                      item={this.state.item}
-                      index={this.state.index}
-                      updateVoteInComponent={this.props.updateVoteInComponent}
-                      parent='post'
-                      enterLike={this.state.enterLike}
-                    />
-                    <FlagComponent postIndex={this.state.index} />
-                  </div>
-                  <div className="wrap-counts clearfix">
-                    <div className="likeMoneyPopup">
-                      {this.likeCheck()}
-                      {this.moneyCheck()}
-                    </div>
-                  </div>
-                </div>
-                <ScrollViewComponent
-                  ref={ (ref) => this.scrollView = ref }
-                  wrapperModifier="list-scroll"
-                  scrollViewModifier="list-scroll__view"
-                  autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                  autoHeightMax={350}
-                  autoHeightMin={100}
-                  autoHide={true}
-                  isUserAuth={isUserAuth}
-                >
-                  {this.renderDescription()}
-                  <Comments
-                    key="comments"
+              }
+              <div className="post-controls clearfix">
+                <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                  <VouteComponent
+                    key='vote'
                     item={this.state.item}
-                    newComment={this.state.newComment}
-                    replyUser={this.commentInput}
+                    index={this.state.index}
+                    updateVoteInComponent={this.props.updateVoteInComponent}
+                    parent='post'
+                    enterLike={this.state.enterLike}
                   />
-                </ScrollViewComponent>
-                {
-                  isUserAuth
+                  <FlagComponent postIndex={this.state.index} />
+                </div>
+                <div className="wrap-counts clearfix">
+                  <div className="likeMoneyPopup">
+                    {this.likeCheck()}
+                    {this.moneyCheck()}
+                  </div>
+                </div>
+              </div>
+              <ScrollViewComponent
+                ref={ (ref) => this.scrollView = ref }
+                wrapperModifier="list-scroll"
+                scrollViewModifier="list-scroll__view"
+                autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+                autoHeightMax={350}
+                autoHeightMin={100}
+                autoHide={true}
+                isUserAuth={isUserAuth}
+              >
+                {this.renderDescription()}
+                <Comments
+                  key="comments"
+                  item={this.state.item}
+                  newComment={this.state.newComment}
+                  replyUser={this.commentInput}
+                />
+              </ScrollViewComponent>
+              {
+                isUserAuth
                   ?
-                    <div className="post-comment">
-                      <div className="comment-form form-horizontal">
-                        <div className="form-group clearfix" ref={ (ref) => {this.formGr = ref} }>
-                          {
-                            this.state.needsCommentFormLoader
+                  <div className="post-comment">
+                    <div className="comment-form form-horizontal">
+                      <div className="form-group clearfix" ref={ (ref) => {this.formGr = ref} }>
+                        {
+                          this.state.needsCommentFormLoader
                             ?
-                              <div className="loaderInComments">
-                                <LoadingSpinner />
-                              </div>
-                              :
-                              <div className="btn-wrap">
-                                <button
-                                  type="submit"
-                                  className="btn-submit"
-                                  onClick={this.sendComment.bind(this)}
-                                  ref={ ref => {this.sendButton = ref} }
-                                  style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
-                                  >Send</button>
-                              </div>
-                          }
-                          <div className="input-container">
+                            <div className="loaderInComments">
+                              <LoadingSpinner />
+                            </div>
+                            :
+                            <div className="btn-wrap">
+                              <button
+                                type="submit"
+                                className="btn-submit"
+                                onClick={this.sendComment.bind(this)}
+                                ref={ ref => {this.sendButton = ref} }
+                                style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
+                              >Send</button>
+                            </div>
+                        }
+                        <div className="input-container">
                             <textarea
                               ref={ (ref) => {this.commentInput = ref} }
                               style={{height : this.state.txtHeight}}
@@ -698,25 +687,25 @@ class ItemModal extends React.Component {
                               onFocus={this.focusInput.bind(this)}
                               onBlur={this.blurInput.bind(this)}
                             />
-                            <ShowIf show={!!this.state.mirrorData}>
-                              <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
-                                {this.state.mirrorData}
-                              </div>
-                            </ShowIf>
-                            <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
-                          </div>
+                          <ShowIf show={!!this.state.mirrorData}>
+                            <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
+                              {this.state.mirrorData}
+                            </div>
+                          </ShowIf>
+                          <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
                         </div>
                       </div>
                     </div>
+                  </div>
                   :
-                    null
-                }
-              </div>
+                  null
+              }
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 }
 
 ItemModal.propTypes = {
