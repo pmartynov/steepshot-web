@@ -61,7 +61,7 @@ class ItemModal extends React.Component {
             // buttonOffset : START_BUTTON_OFFSET,
             // shareOffset : START_SHARE_OFFSET,
             enterLike : false,
-            testParam: true
+            fullScreenBtns: true
         };
         this.mobileCoverParams = {
           width: '100%',
@@ -303,13 +303,17 @@ class ItemModal extends React.Component {
         document.addEventListener('keydown', (e) => {
           e = e || window.event;
           if (e.keyCode == 27) {
-            this.fullScreen();
+            if (this.state.fullScreenMode == false) {
+              this.fullScreen();
+            }
           }
         });
         document.addEventListener('keydown', (e) => {
           e = e || window.event;
           if (e.keyCode == 13) {
-            this.likeFullScreen();
+            if (this.state.fullScreenMode == false) {
+              this.likeFullScreen();
+            }
           }
         });
       }
@@ -416,9 +420,8 @@ class ItemModal extends React.Component {
       this.img.classList.remove('post__image-container-full-screen-img');
       this.imgContainer.classList.remove('post__image-container-full-screen');
       this.imgContainer.style.background = '#fafafa';
-      this.setState({commentValue : '', testParam: true});
+      this.setState({commentValue : '', fullScreenBtns: true});
       this.clearTimeoutFunc();
-      console.log(this.timeout);
       document.body.style.cursor = 'default';
       window.removeEventListener('mousemove', this.showButtons);
     }
@@ -428,7 +431,7 @@ class ItemModal extends React.Component {
         let commentInput = this.commentInput ? this.commentInput.value : '';
         this.setState({commentValue : commentInput, fullScreenMode : false}, () => {
           window.addEventListener('mousemove', this.showButtons);
-          this.testTimeout();
+          this.timeoutFunc();
           this.descriptionCont.classList.add('hideDescCont');
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.add('post__image-container-full-screen-img');
@@ -451,10 +454,10 @@ class ItemModal extends React.Component {
       }
     }
 
-    testTimeout() {
+    timeoutFunc() {
       if (!this.timeout) {
         this.timeout = window.setTimeout( () => {
-          this.setState({testParam: false});
+          this.setState({fullScreenBtns: false});
           document.body.style.cursor = 'none';
           this.clearTimeoutFunc();
         }, 5000);
@@ -463,13 +466,24 @@ class ItemModal extends React.Component {
 
     clearTimeoutFunc = () => {
       window.clearTimeout(this.timeout);
+      this.timeout = null;
     }
 
     showButtons() {
       document.body.style.cursor = 'default';
-      this.setState({testParam: true}, () => {
-        this.testTimeout();
+      this.setState({fullScreenBtns: true}, () => {
+        this.timeoutFunc();
       });
+    }
+
+    buttonsMouseEnter() {
+      this.clearTimeoutFunc();
+      window.removeEventListener('mousemove', this.showButtons);
+    }
+
+    buttonsMouseLeave() {
+      this.showButtons();
+      window.addEventListener('mousemove', this.showButtons);
     }
 
     render() {
@@ -501,37 +515,36 @@ class ItemModal extends React.Component {
                   </div>
                 </div>
                 :
+                this.state.adultParam
+                ?
+                <div style={this.mobileCoverParams}>
+                  <div className="forAdult2">
+                    <div className="forAdultInner">
+                      <p className="par1">NSFW content</p>
+                      <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
+                      <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                    </div>
+                  </div>
+                <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                </div>
+                :
+                this.state.lowParam
+                ?
+                <div style={this.mobileCoverParams}>
+                  <div className="forAdult2">
+                    <div className="forAdultInner">
+                    <p className="par1">Low rated content</p>
+                    <p className="par2">This content is hidden due to low ratings.</p>
+                  <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                </div>
+                  </div>
+                  <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                </div>
+                :
                 null
             }
             <div className="post-wrap post">
               <div className="post__image-container position--relative" ref={ ref => {this.imgContainer = ref} }>
-                {
-                  this.state.adultParam
-                  ?
-                    <div style={this.mobileCoverParams}>
-                      <div className="forAdult2">
-                        <div className="forAdultInner">
-                          <p className="par1">NSFW content</p>
-                          <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
-                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
-                        </div>
-                      </div>
-                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
-                    </div>
-                  :
-                    this.state.lowParam
-                  ?
-                    <div style={this.mobileCoverParams}>
-                      <div className="forAdult2">
-                        <div className="forAdultInner">
-                          <p className="par1">Low rated content</p>
-                          <p className="par2">This content is hidden due to low ratings.</p>
-                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
-                        </div>
-                      </div>
-                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
-                    </div>
-                  :
                     <div>
                     <ShowIf show={!this.state.noFullScreen}>
                       <div>
@@ -564,16 +577,20 @@ class ItemModal extends React.Component {
                           </div>
                         :
                           <div>
-                            <ShowIf show={this.state.testParam}>
-                              <FullScreenFunctional
-                                // offset={this.state.buttonOffset}
-                                next={this.next.bind(this)}
-                                prev={this.previous.bind(this)}
-                                like={this.likeFullScreen.bind(this)}
-                                item={this.state.item}
-                                index={this.state.index}
-                                number={this.state.items.length}
-                              />
+                            <ShowIf show={this.state.fullScreenBtns}>
+                              <div onMouseEnter={this.buttonsMouseEnter.bind(this)}
+                                   onMouseLeave={this.buttonsMouseLeave.bind(this)}
+                              >
+                                <FullScreenFunctional
+                                  // offset={this.state.buttonOffset}
+                                  next={this.next.bind(this)}
+                                  prev={this.previous.bind(this)}
+                                  like={this.likeFullScreen.bind(this)}
+                                  item={this.state.item}
+                                  index={this.state.index}
+                                  number={this.state.items.length}
+                                />
+                              </div>
                             </ShowIf>
                               <img src={itemImage}
                                    alt="Post picture."
@@ -584,7 +601,6 @@ class ItemModal extends React.Component {
                       }
                     </ShowIf>
                     </div>
-                }
               </div>
               <div className="post__description-container" ref={ ref => {this.descriptionCont = ref} }>
                 {

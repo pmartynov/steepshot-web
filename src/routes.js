@@ -46,6 +46,13 @@ export default function getRoutes(store) {
             <Redirect to={`/browse/${baseBrowseFilter()}`} />
           )
         )}/>
+        <Route exact path="/signin" render={() => (
+          isUserLogin ? (
+            <Redirect to="/feed"/>
+          ) : (
+            <Route path="/signin" component={Signin} onLeave={clearMessages} />
+          )
+        )}/>
         <Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
         <Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
         <Route path="/@:username" component={UserProfile} onLeave={clearMessages} />

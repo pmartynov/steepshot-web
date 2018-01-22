@@ -11,35 +11,35 @@ export default function post(state = initialState, action) {
         case 'GET_POSTS__FAILURE':
             return state;
 
-        case 'START_REQUEST':
+        case 'SEND_DELETE_REQUEST':
             return Object.assign({}, state, {
-              posts: state.posts.map((post, index) => {
-                if (index === action.index) {
-                  return Object.assign({}, post, {
-                    isPostDeleting: true
-                  });
-                }
-                return post;
-              })
+              // posts: state.posts.map((post, index) => {
+              //   if (index === action.index) {
+              //     return Object.assign({}, post, {
+              //       isPostDeleting: true
+              //     });
+              //   }
+              //   return post;
+              // })
             });
-        case 'RESOLVE_RESPONSE':
+        case 'SUCCESS_DELETE_RESPONSE':
             return Object.assign({}, state, {
-                posts: state.posts.map( (post, index) => {
-                    if (index == action.index) {
-                        state.posts.splice(index, 1);
-                    }
-                })
+                // posts: state.posts.map( (post, index) => {
+                //     if (index == action.index) {
+                //         state.posts.splice(index, 1);
+                //     }
+                // })
             });
-        case 'REJECT_RESPONSE':
+        case 'FAILURE_DELETE_RESPONSE':
           return Object.assign({}, state, {
-            posts: state.posts.map((post, index) => {
-              if (index === action.index) {
-                return Object.assign({}, post, {
-                  isPostDeleting: false
-                });
-              }
-              return post;
-            })
+            // posts: state.posts.map((post, index) => {
+            //   if (index === action.index) {
+            //     return Object.assign({}, post, {
+            //       isPostDeleting: false
+            //     });
+            //   }
+            //   return post;
+            // })
           });
         default:
             return state;

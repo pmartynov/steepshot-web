@@ -3,23 +3,23 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
 
-function startRequest(postIndex) {
+function sendDeleteRequest(postIndex) {
   return {
-    type: 'START_REQUEST',
+    type: 'SEND_DELETE_REQUEST',
     postIndex: postIndex
   };
 }
 
-function resolveResponse(postIndex) {
+function successDeleteResponse(postIndex) {
   return {
-    type: 'RESOLVE_RESPONSE',
+    type: 'SUCCESS_DELETE_RESPONSE',
     postIndex: postIndex
   };
 }
 
-function rejectedResponse(postIndex) {
+function failureDeleteResponse(postIndex) {
   return {
-    type: 'REJECT_RESPONSE',
+    type: 'FAILURE_DELETE_RESPONSE',
     postIndex: postIndex
   };
 }
@@ -38,32 +38,34 @@ export function deletePost(postIndex) {
     }
     sessionStorage.setItem('voteQueue', 'true');
 
-    dispatch(startRequest(postIndex));
+    dispatch(sendDeleteRequest(postIndex));
 
     const callback = (err, success) => {
       sessionStorage.setItem('voteQueue', 'false');
 
       if (success) {
-        dispatch(resolveResponse(postIndex));
+        dispatch(successDeleteResponse(postIndex));
         let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
         jqApp.pushMessage.open(text);
       } else if (err) {
         console.log(err);
+        let text = 'We are sooorry... The post can\'t be deleted';
+        jqApp.pushMessage.open(text);
+        dispatch(failureDeleteResponse(postIndex));
+        // const nullCreateDeleteCallback = () => {
+        //   if (success) {
+        //     dispatch(successDeleteResponse(postIndex));
+        //     let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
+        //     jqApp.pushMessage.open(text);
+        //   } else if (err) {
+        //     dispatch(failureDeleteResponse(postIndex));
+        //     console.log(err);
+        //     let text = 'We are sooorry... The post can\'t be deleted';
+        //     jqApp.pushMessage.open(text);
+        //   }
+        // };
 
-        const nullCreateDeleteCallback = () => {
-          if (success) {
-            dispatch(resolveResponse(postIndex));
-            let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
-            jqApp.pushMessage.open(text);
-          } else if (err) {
-            dispatch(rejectedResponse(postIndex));
-            console.log(err);
-            let text = 'We are sooorry... The post can\'t be deleted';
-            jqApp.pushMessage.open(text);
-          }
-        };
-
-        Steem.createPost(postingKey, null, username, null, null, deletedFile, nullCreateDeleteCallback);
+        // Steem.createPost(postingKey, null, username, null, null, deletedFile, nullCreateDeleteCallback);
       }
     };
     Steem.deletePost(postingKey, username, permlink, callback);
