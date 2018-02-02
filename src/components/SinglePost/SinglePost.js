@@ -11,10 +11,6 @@ class SinglePost extends React.Component {
     this.props.addSinglePost(this.props.location.pathname);
   }
 
-  // componentWillMount() {
-  //   logSharePost();
-  // }
-
   render() {
     let itemPost, meta;
     if (Object.keys(this.props.post).length != 0) {
@@ -23,16 +19,25 @@ class SinglePost extends React.Component {
       arr[0] = arr[0].toUpperCase();
       let username = this.props.location.pathname.match(/@[\w-.]+\//)[0];
       meta = {
-        title: `${username.replace(/\//, '')}: «${arr.join('')}»` + ' | Steepshot',
+        title: `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
         description: itemPost.description,
-        canonical: itemPost.body,
         meta: {
           charset: 'utf-8',
           name: {
             keywords: 'steepshot, post, share'
+          },
+          property: {
+            'og:image': itemPost.body,
+            'og:title': `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
+            'og:url': window.location.pathname,
+            'og:description': itemPost.description,
+            'site_name': 'https://alpha.steepshot.io'
           }
         }
       };
+      // const urlObject = itemPost.url.split('/');
+      // let permlink = urlObject[urlObject.length - 1];
+      // logSharePost(username.replace(/@([\w-.]+)\//, '$1'), permlink);
     }
 
     if (!this.props.currentIndex) return null;

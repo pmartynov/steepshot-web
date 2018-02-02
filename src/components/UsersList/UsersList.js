@@ -5,17 +5,13 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-import {
-  clearUsersList, getUsersList,
-  initUsersList,
-} from '../../actions/usersList';
+import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../DocumentTitle';
 import UserItem from '../UserProfile/userItem';
 
 class UsersList extends React.Component {
   static defaultProps = {
     isComponentVisible: true,
-
   };
 
   constructor(props) {

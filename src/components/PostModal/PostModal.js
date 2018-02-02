@@ -203,7 +203,7 @@ class PostModal extends React.Component {
                      locale='en_US'
                      className="time_pos-mod"
             />
-            <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '10px' : 0}}
+            <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
                              className="post-context-menu_post"
                              item={this.props.post}
                              index={this.props.currentIndex}

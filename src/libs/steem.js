@@ -221,7 +221,7 @@ class Steem {
         if (err) {
           callback(err, null);
         } else if (success) {
-          logDeletedPost(author, permlink, 'delete');
+          logDeletedPost(author, permlink, 'deleted');
           callback(null, success);
         }
       };

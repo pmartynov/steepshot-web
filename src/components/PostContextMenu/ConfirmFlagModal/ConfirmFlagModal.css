@@ -36,3 +36,18 @@
 .buttons_holder-flag-mod button:first-child {
   margin-right: 15px;
 }
+
+@media screen and (max-width: 815px) {
+  .title_confirm-flag-mod {
+    font: 18px OpenSans-Semibold;
+  }
+  .description_confirm-flag-mod {
+    font: 12px OpenSans-Light;
+  }
+  .buttons_holder-flag-mod button {
+    font: 10px OpenSans-Regular;
+  }
+  .description-link_confirm-flag-mod {
+    font: 12px OpenSans-Regular;
+  }
+}

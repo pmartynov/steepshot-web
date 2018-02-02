@@ -25,3 +25,15 @@
 .buttons_holder-del-mod button:first-child {
   margin-right: 15px;
 }
+
+@media screen and (max-width: 815px) {
+  .title_confirm-del-mod {
+    font: 18px OpenSans-Semibold;
+  }
+  .description_confirm-del-mod {
+    font: 12px OpenSans-Light;
+  }
+  .buttons_holder-del-mod button {
+    font: 10px OpenSans-Regular;
+  }
+}

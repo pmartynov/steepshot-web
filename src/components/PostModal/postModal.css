@@ -90,14 +90,6 @@
   color: #e74800;
 }
 
-/*.cont-close-btn_pos-mod {*/
-  /*height: 12px;*/
-  /*width: 12px;*/
-  /*float: right;*/
-  /*margin-left: 14px;*/
-  /*cursor: pointer;*/
-/*}*/
-
 .close-btn_pos-mod {
   position: absolute;
   top: 50%;
@@ -108,15 +100,12 @@
   background: url(/static/images/sprite_svg1910.svg) no-repeat 3% 99.8%;
 }
 .cont-close-btn_pos-mod {
-  border: 1px solid #ececee;
   cursor: pointer;
-  height: 22px;
-  width: 22px;
-  border-radius: 4px;
-  position: relative;
-}
-.cont-close-btn_pos-mod:hover {
-  border: 1px solid #89210b;
+  height: 32px;
+  width: 32px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .time_pos-mod {

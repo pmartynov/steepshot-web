@@ -15,11 +15,17 @@ export default function usersList(state = {}, action) {
         [action.point]: {}
       });
     case 'GET_USERS_LIST_SUCCESS':
+      let usersArr;
+      if (action.options.users) {
+        usersArr = [...state[action.options.point].users, ...action.options.users];
+      } else {
+        usersArr = [];
+      }
       return Object.assign({}, state, {
         [action.options.point]: Object.assign({}, state[action.options.point], {
           loading : false,
           hasMore : action.options.hasMore,
-          users: [...state[action.options.point].users, ...action.options.users],
+          users: usersArr,
           offset: action.options.offset,
           loader: false
         }),

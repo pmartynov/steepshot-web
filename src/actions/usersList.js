@@ -48,8 +48,8 @@ export function getUsersList(point, getUsers) {
       point,
       params: Object.assign({}, {
           offset: statePoint.offset,
-        },
-        statePoint.options)
+      },
+      statePoint.options)
     };
     getUsers(requestOptions, true).then((response) => {
       let newUsers = response.results;

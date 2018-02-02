@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import ShowIf from "../../../Common/ShowIf";
+import {connect} from 'react-redux';
+import ShowIf from '../../../Common/ShowIf';
 
 class Likes extends React.Component {
   constructor(props) {

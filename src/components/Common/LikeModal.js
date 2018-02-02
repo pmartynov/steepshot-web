@@ -106,7 +106,9 @@ class LikesModal extends React.Component {
   get voters() {
     if (this.state.initialLoading) {
       return (
-        <LoadingSpinner/>
+        <div className="like-modal-loader">
+          <LoadingSpinner/>
+        </div>
       );
     }
     if (this.state.voters.length == 0) {
@@ -150,14 +152,14 @@ class LikesModal extends React.Component {
 
   render() {
     return (
-      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like">
+      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal fade modal-like">
         <div className="modal-dialog" onClick={this.controlClose.bind(this)}>
           <div className="modal-content"
                ref={ref => (this.modalCont = ref)}>
             <div className="modal-header">
               <div className="modal-title clearfix">
                 <p>{Constants.POST_LIKED_BY}</p>
-                <div className="close-modal_likes-mod" data-dismiss="modal">
+                <div className="close-modal_likes-mod" onClick={()=>{jqApp.closeLikesModal($(document))}}>
                   <i className="cross_menu"/>
                 </div>
               </div>

@@ -7,27 +7,24 @@
 .header_menu {
   position: relative;
   height: 44px;
-  text-align: center;
+  text-align: left;
 }
 
 .title_menu {
   font: 14px OpenSans-Regular;
   color: #0f181e;
   line-height: 40px;
+  margin-left: 10px;
 }
 
 .cross-wrapper_menu {
   cursor: pointer;
-  height: 22px;
-  width: 22px;
-  top: 8px;
+  height: 32px;
+  width: 32px;
+  top: 4px;
   right: 0;
   border-radius: 4px;
   position: absolute;
-  border: 1px solid #ececee;
-}
-.cross-wrapper_menu:hover {
-  border: 1px solid #89210b;
 }
 .cross_menu {
   position: absolute;

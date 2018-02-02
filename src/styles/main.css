@@ -1226,7 +1226,7 @@ h2.card-field__heading {
   }
 }
 .number-of-comments_post p {
-  font: 12px OpenSans;
+  font: 12px OpenSans-Regular;
   line-height: 50px;
 }
 
@@ -1250,30 +1250,36 @@ h2.card-field__heading {
   padding: 0 20px;
   position: relative;
 }
-@media screen and (min-width: 350px) {
-
+.modal-title p {
+  margin-left: 10px;
 }
 .close-modal_likes-mod {
   cursor: pointer;
   position: absolute;
-  height: 22px;
-  width: 22px;
-  top: 14px;
+  height: 32px;
+  width: 32px;
+  top: 10px;
   right: 0;
-  border-radius: 4px;
-  border: 1px solid #ececee;
-}
-.close-modal_likes-mod:hover {
-  border: 1px solid #89210b;
 }
 .modal-header .modal-title {
-  text-align: center;
   height: 50px;
 }
- /*testing*/
+@media screen and (min-width: 1024px) {
+  .modal-content {
+    min-width: 339px;
+    min-height: 220px;
+  }
+}
+
 
 .post-card {
   margin: 0 auto;
   padding: 0 0 15px 0;
 }
 
+.like-modal-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
