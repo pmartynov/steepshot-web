@@ -12,14 +12,14 @@ import './comments.css';
 class Comments extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super();
 		props.initPostComment(props.point);
 		props.getComments(props.point);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
-			this.props.getComments(nextProps.point);
+			nextProps.getComments(nextProps.point);
 		}
 		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
 			this.scrollBar.scrollToTop();

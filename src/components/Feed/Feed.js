@@ -28,7 +28,6 @@ class Feed extends React.Component {
 				<div id="workspace" className="g-content clearfix">
 					<PostsList
 						point={Constants.POSTS_FILTERS.POSTS_USER_FEED.point}
-						cancelPrevious={false}
 						wrapperModifier="posts-list clearfix"
 					/>
 				</div>

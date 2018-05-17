@@ -1,4 +1,3 @@
-import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
@@ -6,6 +5,7 @@ import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
+import PostService from "../services/postService";
 
 function toggleFlagRequest(postIndex) {
 	return {
@@ -14,17 +14,19 @@ function toggleFlagRequest(postIndex) {
 	};
 }
 
-function toggleFlagSuccess(postIndex) {
+function toggleFlagSuccess(postIndex, response) {
 	return {
 		type: 'TOGGLE_FLAG_SUCCESS',
 		index: postIndex,
+		response
 	};
 }
 
-function toggleFlagFailure(postIndex) {
+function toggleFlagError(postIndex, error) {
 	return {
-		type: 'TOGGLE_FLAG_FAILURE',
+		type: 'TOGGLE_FLAG_ERROR',
 		index: postIndex,
+		error
 	};
 }
 
@@ -42,31 +44,23 @@ export function toggleFlag(postIndex) {
 		if (state.session.actionLocked) {
 			return;
 		}
+
 		dispatch(actionLock());
 		dispatch(toggleFlagRequest(postIndex));
-
-		const callback = (err, success) => {
-			dispatch(actionUnlock());
-			if (err) {
-				dispatch(toggleFlagFailure(postIndex));
-				dispatch(pushMessage(err));
-			} else if (success) {
-				dispatch(toggleFlagSuccess(postIndex));
+		PostService.changeFlag(post.author, PostService.getPermlinkFromUrl(post.url), newFlagState)
+			.then(response => {
+				dispatch(actionUnlock());
+				dispatch(toggleFlagSuccess(postIndex, response));
 				dispatch(updatePost(postIndex, 0, newFlagState));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
 				if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
 				dispatch(pushMessage(text));
-			}
-		};
-
-		let urlObject = post.url.split('/');
-		Steem.flag(postingKey,
-			username,
-			post.author,
-			urlObject[urlObject.length - 1],
-			newFlagState,
-			callback,
-		);
+			})
+			.catch(error => {
+				dispatch(actionUnlock());
+				dispatch(toggleFlagError(postIndex, error));
+				dispatch(pushMessage(error));
+			});
 	};
 }

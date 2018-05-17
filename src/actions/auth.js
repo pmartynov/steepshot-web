@@ -1,13 +1,13 @@
-import steem from 'steem';
-import {logLogin} from './logging';
 import {push} from 'react-router-redux';
-import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
-import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 import storage from "../utils/Storage";
 import {unsubscribe} from "./oneSignal";
+import UserService from "../services/userService";
+import OneSignalService from "../services/oneSignalService";
+import LoggingService from "../services/loggingService";
+import SteemService from "../services/steemService";
 
 function showMessage(message) {
 	return dispatch => {
@@ -16,62 +16,56 @@ function showMessage(message) {
 	}
 }
 
+function loginError(error) {
+	return dispatch => {
+		dispatch(showMessage(error));
+		dispatch({
+			type: 'LOGIN_ERROR',
+			error
+		})
+	}
+}
+
 export function login(username, postingKey) {
 	return dispatch => {
 		dispatch(showBodyLoader());
-		steem.api.getAccounts([username], function (err, result) {
-			if (err) {
-				dispatch(showMessage('Something went wrong, please, try again later'));
+		SteemService.getAccounts(username)
+			.then(response => {
+				if (response.length === 0) {
+					return dispatch(loginError('Such user doesn\'t exist'));
+				}
+				let pubWif = response[0].posting.key_auths[0][0];
+				let isValid = SteemService.wifIsValid(postingKey, pubWif);
+				if (!isValid) {
+					return dispatch(loginError('Invalid username or posting key'));
+				}
 
-				return false;
-			}
-			if (result.length === 0) {
-				dispatch(showMessage('Such user doesn\'t exist'));
-				return false;
-			}
-			let pubWif = result[0].posting.key_auths[0][0];
-			let isValid = false;
-			try {
-				isValid = steem.auth.wifIsValid(postingKey, pubWif);
-			} catch (e) {
-				console.log('login failure: ', e);
-			}
-			if (!isValid) {
-				dispatch(showMessage('Invalid username or posting key'));
-				return {
-					type: 'LOGIN_FAILURE',
-					messages: 'Not valid username or posting key'
-				};
-			}
-			const data = JSON.stringify({
-				username: username,
-				error: ''
-			});
-			logLogin(data);
-
-			let avatar = getAvatar(result[0]);
-
-			storage.user = username;
-			storage.postingKey = postingKey;
-			storage.like_power = 100;
-			storage.avatar = avatar;
-			addNotificationTags(username);
-			dispatch(checkSubscribeAndUpdateSettings());
-			dispatch({
-				type: 'LOGIN_SUCCESS',
-				postingKey: postingKey,
-				user: username,
-				avatar: avatar,
-				like_power: 100
-			});
-			dispatch({
-				type: 'UPDATE_VOTING_POWER',
-				voting_power: result[0].voting_power / 100
-			});
-			dispatch(push('/feed'));
-			let parseResult = JSON.parse(result[0].json_metadata);
-			dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
-		});
+				LoggingService.logLogin();
+				let avatar = getAvatar(response[0]);
+				storage.user = username;
+				storage.postingKey = postingKey;
+				storage.like_power = 100;
+				storage.avatar = avatar;
+				OneSignalService.addNotificationTags(username);
+				dispatch(checkSubscribeAndUpdateSettings());
+				dispatch({
+					type: 'LOGIN_SUCCESS',
+					postingKey,
+					user: username,
+					avatar,
+					like_power: 100
+				});
+				dispatch({
+					type: 'UPDATE_VOTING_POWER',
+					voting_power: response[0].voting_power / 100
+				});
+				dispatch(push('/feed'));
+				let parseResult = JSON.parse(response[0].json_metadata);
+				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+			})
+			.catch(() => {
+				return dispatch(loginError('Something went wrong, please, try again later'));
+			})
 	}
 }
 
@@ -100,7 +94,7 @@ export function logout() {
 		storage.settings = null;
 		storage.avatar = null;
 		storage.like_power = null;
-		removeNotificationTags();
+		OneSignalService.removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
 	}
@@ -108,7 +102,7 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		getProfile(username).then((result) => {
+		UserService.getProfile(username).then((result) => {
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result.voting_power

@@ -62,7 +62,6 @@ class Browse extends React.Component {
 						<Tab name="Hot">
 							<PostsList
 								point={Constants.POSTS_FILTERS.POSTS_HOT.point}
-								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
 								isComponentVisible={this.props.activeIndex === 0}
 							/>
@@ -70,7 +69,6 @@ class Browse extends React.Component {
 						<Tab name="New">
 							<PostsList
 								point={Constants.POSTS_FILTERS.POSTS_NEW.point}
-								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
 								isComponentVisible={this.props.activeIndex === 1}
 							/>
@@ -78,7 +76,6 @@ class Browse extends React.Component {
 						<Tab name="Top">
 							<PostsList
 								point={Constants.POSTS_FILTERS.POSTS_TOP.point}
-								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
 								isComponentVisible={this.props.activeIndex === 2}
 							/>

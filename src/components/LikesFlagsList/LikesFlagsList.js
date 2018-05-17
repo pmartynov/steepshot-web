@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
-import {getVoters} from "../../services/posts";
 import CloseButton from "../Common/CloseButton/CloseButton";
 import {Scrollbars} from 'react-custom-scrollbars';
 import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
@@ -74,7 +73,6 @@ class LikesFlagsList extends React.Component {
 							<UsersList
 								isLikesFlags={true}
 								point={this.props.point}
-								getUsers={getVoters}
 								useScrollView={true}
 								options={{likes: 1}}
 								commonLoader={commonLoader}
@@ -88,7 +86,6 @@ class LikesFlagsList extends React.Component {
 						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
 								point={this.props.point}
-								getUsers={getVoters}
 								useScrollView={true}
 								options={{flags: 1}}
 								commonLoader={commonLoader}

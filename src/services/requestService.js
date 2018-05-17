@@ -1,29 +1,68 @@
-import BaseRequestService from './baseRequestService';
+import Constants from "../common/constants";
 
-class RequestService extends BaseRequestService {
+class RequestService {
 
-	optionsConverter() {
-		let newOptions = {};
-		Array.prototype.map.call(arguments, (optionsPart) => {
-			Object.assign(newOptions, optionsPart)
-		});
-		return this.convertOptionsToRequestString(newOptions);
+	static get(url, options) {
+		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + convertOptionsToRequestString(options);
+		return fetch(fullUrl, {
+			method: 'GET'
+		}).then(RequestService.processResponse);
 	}
 
-	handlev1_1BaseRequestPosts(url, options) {
-		return this.getBasev1_1Url() + '/' + url +
-			this.optionsConverter(this.getDefaultPostsOptions(), this.getDefaultSettingsOptions(), this.getAuthUser(), options);
+	static post(url, data) {
+		const options = {
+			method: 'POST'
+		};
+		if (isJson(data)) {
+			options.headers = {'Content-Type': 'application/json'};
+			options.body = JSON.stringify(data)
+		} else {
+			options.body = data
+		}
+
+		return fetch(`${Constants.URLS.baseUrl_v1_1}/${url}`, options)
+			.then(RequestService.processResponse);
 	}
 
-	handlev1_1BaseRequestPost(url) {
-		return this.getBasev1_1Url() + '/' + url
-			+ this.optionsConverter(this.getCustomSettingsOptions(true, true), this.getAuthUser());
-	}
-
-	handlev1_1RequestUserInfo(url, options) {
-		return this.getBasev1_1Url() + '/' + url +
-			this.optionsConverter(this.getDefaultSettingsOptions(), this.getAuthUser(), options);
+	static processResponse(response) {
+		if (response.status === 200) {
+			const contentType = response.headers.get("content-type");
+			if (contentType && contentType.indexOf("application/json") !== -1) {
+				return response.json();
+			}
+			return response;
+		}
+		return Promise.reject(response);
 	}
 }
 
-export default new RequestService();
+export default RequestService;
+
+function isJson(str) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}
+
+function convertOptionsToRequestString(options) {
+	if (!options) return '';
+
+	let optionsArray = [];
+	for (let key in options) {
+		if (options[key]) optionsArray.push(key + '=' + convertIfBool(options[key]));
+	}
+	return '?' + optionsArray.join('&');
+}
+
+function convertIfBool(option) {
+	if (option === true) {
+		return "1";
+	} else if (option === false) {
+		return "0";
+	} else {
+		return option;
+	}
+}

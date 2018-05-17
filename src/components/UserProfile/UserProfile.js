@@ -1,5 +1,4 @@
 import React from 'react';
-import {getFollowers, getFollowing} from '../../services/posts';
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
@@ -109,7 +108,6 @@ class UserProfile extends React.Component {
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
 											className="posts-list clearfix type-2"
-											getUsers={getFollowers}
 											isComponentVisible={this.props.activeIndex === 1}
 										/>
 								</Tab>
@@ -117,7 +115,6 @@ class UserProfile extends React.Component {
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
 											className="posts-list clearfix type-2"
-											getUsers={getFollowing}
 											isComponentVisible={this.props.activeIndex === 2}
 										/>
 								</Tab>

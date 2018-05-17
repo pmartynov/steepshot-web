@@ -54,7 +54,7 @@ export default function posts(state = {}, action) {
 				}
 			};
 
-		case 'TOGGLE_FLAG_FAILURE':
+		case 'TOGGLE_FLAG_ERROR':
 			return {
 				...state,
 				[action.index]: {
@@ -83,7 +83,7 @@ export default function posts(state = {}, action) {
 				},
 			};
 
-		case 'TOGGLE_VOTE_FAILURE':
+		case 'TOGGLE_VOTE_ERROR':
 			return {
 				...state,
 				[action.index]: {
@@ -102,7 +102,7 @@ export default function posts(state = {}, action) {
 				},
 			};
 
-		case 'SEND_DELETE_POST':
+		case 'DELETE_POST_REQUEST':
 			return {
 				...state,
 				[action.index]: {
@@ -111,12 +111,12 @@ export default function posts(state = {}, action) {
 				}
 			};
 
-		case 'SUCCESS_DELETE_POST':
+		case 'DELETE_POST_SUCCESS':
 			let copyState = {...state};
 			delete copyState[action.index];
 			return copyState;
 
-		case 'FAILURE_DELETE_POST':
+		case 'DELETE_POST_ERROR':
 			return {
 				...state,
 				[action.index]: {

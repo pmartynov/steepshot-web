@@ -1,5 +1,5 @@
 import {getStore} from '../store/configureStore';
-import {getUsersSearch} from "../services/posts";
+import UserService from "../services/userService";
 
 export function initUsersList(options) {
 	return {
@@ -39,7 +39,7 @@ function getUsersListError(point, error) {
 }
 
 
-export function getUsersList(point, getUsers) {
+export function getUsersList(point) {
 	const LIMIT = 16;
 	let statePoint = getStore().getState().usersList[point];
 	if (statePoint.loading) {
@@ -55,48 +55,41 @@ export function getUsersList(point, getUsers) {
 	}
 	return (dispatch) => {
 		dispatch(getUsersListRequest(point));
-		const requestOptions = {
-			point: point.substr(0, point.indexOf('JSON_OPTIONS:')),
-			params: {
-				...statePoint.options,
-				offset: statePoint.offset,
-				limit: LIMIT
-			}
-		};
-		getUsers(requestOptions, true).then((response) => {
-			statePoint = getStore().getState().usersList[point];
-			let newUsers = response.results;
-			let hasMore = response.results.length === LIMIT;
-			if (statePoint.users.length !== 0) {
-				newUsers = newUsers.slice(1, newUsers.length);
-			}
-			let uniqueUsers = [];
-			newUsers.forEach(user => {
-				if (statePoint.users.indexOf(user.author) === -1) {
-					uniqueUsers.push(user);
+		UserService.getUsersList(point.substr(0, point.indexOf('JSON_OPTIONS:')), statePoint.offset, LIMIT, statePoint.options)
+			.then((response) => {
+				statePoint = getStore().getState().usersList[point];
+				let newUsers = response.results;
+				let hasMore = response.offset !== statePoint.offset;
+				if (statePoint.users.length !== 0) {
+					newUsers = newUsers.slice(1, newUsers.length);
 				}
-			});
-			newUsers = uniqueUsers;
-			let authors = newUsers.map((user) => {
-				return user.author;
-			});
-			let users = {};
-			newUsers.forEach((user) => {
-				users[user.author] = {
-					...user,
-					togglingFollow: false
+				let uniqueUsers = [];
+				newUsers.forEach(user => {
+					if (statePoint.users.indexOf(user.author) === -1) {
+						uniqueUsers.push(user);
+					}
+				});
+				newUsers = uniqueUsers;
+				let authors = newUsers.map((user) => {
+					return user.author;
+				});
+				let users = {};
+				newUsers.forEach((user) => {
+					users[user.author] = {
+						...user,
+						togglingFollow: false
+					};
+				});
+
+				let pointOptions = {
+					point,
+					hasMore,
+					users: authors,
+					offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
 				};
-			});
 
-			let pointOptions = {
-				point,
-				hasMore,
-				users: authors,
-				offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
-			};
-
-			dispatch(getUsersListSuccess(pointOptions, users));
-		}).catch( error => {
+				dispatch(getUsersListSuccess(pointOptions, users));
+			}).catch(error => {
 			dispatch(getUsersListError(point, error));
 		});
 	};
@@ -120,16 +113,16 @@ export function updateUser(author) {
 	return (dispatch) => {
 		dispatch(updateUserRequest(author));
 
-		const requestOptions = {
-			point: 'user/search',
-			params: Object.assign({}, {
-				limit: 1,
-				query: author
+		UserService.getUsersList('user/search', undefined, 1, {query: author})
+			.then((response) => {
+				let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
+				dispatch(updateUserSuccess(updatedUser));
 			})
-		};
-		getUsersSearch(requestOptions, true).then((response) => {
-			let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
-			dispatch(updateUserSuccess(updatedUser));
-		});
+			.catch( error => {
+				dispatch({
+					type: 'UPDATE_USER_ERROR',
+					error
+				})
+			});
 	}
 }

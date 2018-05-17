@@ -22,12 +22,28 @@ export default function getComments(state = {}, action) {
 					loading: false
 				}
 			};
-		case 'SENDING_NEW_COMMENT':
+		case 'ADD_NEW_COMMENT_REQUEST':
 			return {
 				...state,
 				[action.point]: {
 					...state[action.point],
-					sendingNewComment: action.flag
+					sendingNewComment: true
+				}
+			};
+		case 'ADD_NEW_COMMENT_SUCCESS':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					sendingNewComment: false
+				}
+			};
+		case 'ADD_NEW_COMMENT_ERROR':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					sendingNewComment: false
 				}
 			};
 		case 'ADDED_NEW_COMMENT':

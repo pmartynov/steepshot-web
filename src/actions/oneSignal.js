@@ -1,12 +1,9 @@
 import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
-import {
-	addNotificationTags, changeSubscribeOnUser, removeNotificationTags,
-	setSubscribeConfiguration
-} from "../services/oneSignal";
 import storage from "../utils/Storage";
 import {pushMessage} from "./pushMessage";
 import {updateSettings} from "./settings";
+import OneSignalService from "../services/oneSignalService";
 
 let OneSignal = window.OneSignal;
 
@@ -69,10 +66,10 @@ async function subscribeListener(isSubscribed) {
 	let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
 	let user = store.getState().auth.user;
 	if (isSubscribed) {
-		addNotificationTags(user, playerId);
+		OneSignalService.addNotificationTags(user, playerId);
 		store.dispatch(setSubscription(true));
 	} else {
-		removeNotificationTags();
+		OneSignalService.removeNotificationTags();
 	}
 	store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
 	store.dispatch({
@@ -93,7 +90,7 @@ export function setSubscribeOnBackend() {
 			type: 'SET_SUBSCRIPTION_ON_BACKEND_REQUEST'
 		});
 
-		setSubscribeConfiguration(username, postingKey, player_id, app_id, settings).then(() => {
+		OneSignalService.setSubscribeConfiguration(username, postingKey, player_id, app_id, settings).then(() => {
 			dispatch({
 				type: 'SET_SUBSCRIBE_ON_BACKEND_SUCCESS',
 				settings,
@@ -122,7 +119,7 @@ export function changeUserSubscribe() {
 		dispatch({
 			type: 'CHANGE_USER_SUBSCRIBE_REQUEST'
 		});
-		changeSubscribeOnUser(subscriber, profile.username, player_id, app_id, subscribed).then(() => {
+		OneSignalService.changeSubscribeOnUser(subscriber, profile.username, player_id, app_id, subscribed).then(() => {
 			dispatch(pushMessage(`User has been successfully ${subscribed ? 'un' : ''}subscribed`));
 			dispatch({
 				type: 'CHANGE_USER_SUBSCRIBE_SUCCESS'

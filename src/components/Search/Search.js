@@ -1,6 +1,5 @@
 import React from 'react';
 import PostsList from '../PostsList/PostsList';
-import {getUsersSearch} from '../../services/posts';
 import {documentTitle} from '../../utils/documentTitle';
 import {insertCategory} from '../../utils/search';
 import UsersList from '../UsersList/UsersList';
@@ -59,7 +58,6 @@ class Search extends React.Component {
 					<PostsList
 						point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
 						wrapperModifier="posts-list clearfix"
-						cancelPrevious={false}
 						options={{limit: 4}}
 						maxPosts={4}
 						headerText={hotPost}
@@ -69,7 +67,6 @@ class Search extends React.Component {
 						<PostsList
 							point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
 							wrapperModifier="posts-list clearfix"
-							cancelPrevious={false}
 							ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
 							headerText={newPost}
 							isComponentVisible={this.props.activeIndex === 0}
@@ -82,7 +79,6 @@ class Search extends React.Component {
 					<HeadingLeadComponent text={userResult}/>
 					<UsersList
 						point={Constants.SEARCH_FILTERS.USERS.point}
-						getUsers={getUsersSearch}
 						options={{query: this.props.searchValue}}
 						isComponentVisible={this.props.activeIndex === 1}
 					/>

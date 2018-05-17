@@ -11,11 +11,19 @@ export default function users(state = {}, action) {
 					togglingFollow: true
 				}
 			};
-		case 'TOGGLE_FOLLOW_FAILURE':
+		case 'TOGGLE_FOLLOW_ERROR':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
 					togglingFollow: false
+				}
+			};
+		case 'TOGGLE_FOLLOW_SUCCESS':
+			return {
+				...state, [action.author]: {
+					...state[action.author],
+					togglingFollow: false,
+					has_followed: !state[action.author]['has_followed']
 				}
 			};
 		case 'UPDATE_USER_SUCCESS':

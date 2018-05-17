@@ -19,25 +19,22 @@ class UsersList extends React.Component {
 	};
 
 	constructor(props) {
-		super(props);
+		super();
 		props.clearUsersList(props.point);
 		let usersListOptions = UsersList.userListOptions(props);
 		props.initUsersList(usersListOptions);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
+		if (nextProps.options && (nextProps.options.query !== this.props.options.query) && nextProps.point) {
 			let usersListOptions = UsersList.userListOptions(nextProps);
 			this.props.initUsersList(usersListOptions);
-			this.props.getUsersList(nextProps.point, this.props.getUsers);
+			this.props.getUsersList(nextProps.point);
 		}
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (utils.equalsObjects(nextProps, this.props)) {
-			return false;
-		}
-		return true;
+		return !utils.equalsObjects(nextProps, this.props);
 	}
 
 	static userListOptions(props) {
@@ -52,13 +49,15 @@ class UsersList extends React.Component {
 	}
 
 	getUsersList() {
-		if (this.props.isComponentVisible) {
-			this.props.getUsersList(this.props.point, this.props.getUsers);
+		if (this.props.isComponentVisible && this.props.point) {
+			this.props.getUsersList(this.props.point);
 		}
 	}
 
 	componentDidMount() {
-		this.props.getUsersList(this.props.point, this.props.getUsers);
+		if (this.props.point) {
+			this.props.getUsersList(this.props.point);
+		}
 		documentTitle();
 	}
 
@@ -123,8 +122,8 @@ const mapDispatchToProps = (dispatch) => {
 		initUsersList: (options) => {
 			dispatch(initUsersList(options));
 		},
-		getUsersList: (point, func) => {
-			dispatch(getUsersList(point, func));
+		getUsersList: (point) => {
+			dispatch(getUsersList(point));
 		},
 		clearUsersList: (point) => {
 			dispatch(clearUsersList(point));

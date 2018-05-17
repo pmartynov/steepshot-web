@@ -12,7 +12,6 @@ import Constants from "../../common/constants";
 
 class PostsList extends React.Component {
 	static defaultProps = {
-		cancelPrevious: false,
 		maxPosts: 9999,
 		clearPostHeader: false,
 		isComponentVisible: true,
@@ -23,7 +22,6 @@ class PostsList extends React.Component {
 		super(props);
 		let postsListOptions = {
 			point: props.point,
-			cancelPrevious: props.cancelPrevious,
 			options: props.options,
 			maxPosts: props.maxPosts,
 			loading: false,
@@ -42,7 +40,6 @@ class PostsList extends React.Component {
 		if (nextProps.point !== this.props.point) {
 			let postsListOptions = {
 				point: nextProps.point,
-				cancelPrevious: nextProps.cancelPrevious,
 				options: nextProps.options,
 				maxPosts: nextProps.maxPosts,
 				loading: false,

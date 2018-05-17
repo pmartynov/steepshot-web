@@ -40,7 +40,7 @@ export default function getRoutes() {
 				<Route path="/dev/test" component={Testing}/>
 				<PrivateRoute path="/feed" component={Feed}/>
 				<Redirect path="/createPost" to={'/editPost'}/>
-				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost}/>
+				<PrivateRoute path="/editPost/:postUrl?" component={EditPost}/>
 				<PrivateRoute path="/Profile" component={UserProfile}/>
 				<PrivateRoute path="/settings" component={Settings}/>
 				<Route path="*" component={NotFound}/>

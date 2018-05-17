@@ -1,6 +1,6 @@
 {
   "name": "Steepshot-web",
-  "version": "1.0.0",
+  "version": "0.0.6",
   "repository": {
     "type": "git"
   },
@@ -54,8 +54,7 @@
     "redux-thunk": "^2.2.0",
     "slick-carousel": "^1.8.1",
     "steem": "^0.7.1",
-    "timeago-react": "^2.0.0",
-    "underscore": "^1.9.0"
+    "timeago-react": "^2.0.0"
   },
   "devDependencies": {
     "babel-plugin-transform-ensure-ignore": "^0.1.0",

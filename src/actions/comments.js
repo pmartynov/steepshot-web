@@ -1,10 +1,10 @@
-import {getComments} from "../services/posts";
 import {getStore} from "../store/configureStore";
-import Steem from "../services/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
+import CommentService from "../services/commentService";
+import PostService from "../services/postService";
 
 export function initPostComment(point) {
 	return {
@@ -36,47 +36,65 @@ export function getPostComments(point) {
 			type: 'GET_POST_COMMENT_REQUEST',
 			point
 		});
-		const options = {
-			point: `post/${post.author}${post.url}/comments`,
-			params: {}
-		};
-		getComments(options, true).then((response) => {
-			const comments = response.results.reverse();
-			if (!comments) {
-				dispatch({
-					type: 'GET_COMMENT_ERROR',
-					response
+		CommentService.getComments(post.author, post.url)
+			.then((response) => {
+				const comments = response.results.reverse();
+				if (!comments) {
+					dispatch({
+						type: 'GET_COMMENT_ERROR',
+						response
+					});
+					return;
+				}
+				let commentsUrls = comments.map((comment) => {
+					return comment.url
 				});
-				return;
-			}
-			let commentsUrls = comments.map((comment) => {
-				return comment.url
-			});
 
-			let commentsObjects = {};
-			for (let i = 0; i < comments.length; i++) {
-				let comment = {
-					...comments[i],
-					flagLoading: false,
-					voteLoading: false
-				};
-				commentsObjects[comments[i].url] = comment;
-			}
-			dispatch({
-				type: 'GET_POST_COMMENTS_SUCCESS',
-				point,
-        commentsUrls,
-				posts: commentsObjects,
+				let commentsObjects = {};
+				for (let i = 0; i < comments.length; i++) {
+					let comment = {
+						...comments[i],
+						flagLoading: false,
+						voteLoading: false
+					};
+					commentsObjects[comments[i].url] = comment;
+				}
+				dispatch({
+					type: 'GET_POST_COMMENTS_SUCCESS',
+					point,
+					commentsUrls,
+					posts: commentsObjects,
+				});
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_POST_COMMENTS_ERROR',
+					error
+				});
 			});
-		});
 	}
 }
 
-function sendingNewComment(point, flag) {
+function addNewCommentRequest(point) {
 	return {
-		type: 'SENDING_NEW_COMMENT',
+		type: 'ADD_NEW_COMMENT_REQUEST',
+		point
+	}
+}
+
+function addNewCommentSuccess(point, response) {
+	return {
+		type: 'ADD_NEW_COMMENT_SUCCESS',
 		point,
-		flag
+		response
+	}
+}
+
+function addNewCommentError(point, error) {
+	return {
+		type: 'ADD_NEW_COMMENT_ERROR',
+		point,
+		error
 	}
 }
 
@@ -103,19 +121,17 @@ export function sendComment(postIndex, point) {
 	let post = state.posts[postIndex];
 	let comment = state.textInput[point].text;
 	return (dispatch) => {
-    if (state.session.actionLocked) {
-      return;
-    }
-    dispatch(actionLock());
-		dispatch(sendingNewComment(postIndex, true));
-		const urlObject = post.url.split('/');
-		const callback = (err, success) => {
-      dispatch(actionUnlock());
-			dispatch(sendingNewComment(postIndex, false));
-			if (err) {
-				dispatch(pushMessage(err));
-			} else if (success) {
-				const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
+		if (state.session.actionLocked) {
+			return;
+		}
+		dispatch(actionLock());
+		dispatch(addNewCommentRequest(postIndex));
+
+		CommentService.addComment(post.author, PostService.getPermlinkFromUrl(post.url), comment)
+			.then(response => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentSuccess(postIndex, response));
+				const url = postIndex + '#@' + state.auth.user + '/' + response.operations[0][1].permlink;
 				const newComment = {
 					net_votes: 0,
 					net_likes: 0,
@@ -129,21 +145,16 @@ export function sendComment(postIndex, point) {
 					voteLoading: false,
 					url
 				};
-				dispatch(addedNewComment(postIndex, { [url]: newComment}, url));
+				dispatch(addedNewComment(postIndex, {[url]: newComment}, url));
 				dispatch(clearTextInputState(point));
 				dispatch(scrollToLastComment(postIndex));
 				dispatch(pushMessage(Constants.COMMENT_SUCCESS_MESSAGE));
-			}
-		};
-		Steem.comment(
-			state.auth.postingKey,
-			post.author,
-			urlObject[urlObject.length - 1],
-			state.auth.user,
-			comment,
-			post.tags,
-			callback,
-		);
+			})
+			.catch( error => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentError(postIndex, error));
+				dispatch(pushMessage(error));
+			})
 	};
 }
 

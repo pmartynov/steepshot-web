@@ -1,9 +1,6 @@
 import {getStore} from "../store/configureStore";
 import {utils} from "../utils/utils";
-import {getPostShaddow} from "../services/posts";
-import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
-import {getCreateWaitingTime} from "../services/users";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
 import {openModal} from "./modal";
@@ -11,6 +8,8 @@ import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
 import {pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
+import PostService from "../services/postService";
+import UserService from "../services/userService";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -117,15 +116,14 @@ export function editPostClear() {
 	}
 }
 
-export function setInitDataForEditPost(username, postId) {
+export function setInitDataForEditPost(postUrl) {
+	const username = getStore().getState().auth.user;
 	return (dispatch) => {
-		if (!username || !postId) {
+		if (!username || !postUrl) {
 			dispatch(createNewPost())
 		} else {
-			getPostShaddow(username + '/' + postId).then((response) => {
-				if (!response) {
-					dispatch(createNewPost())
-				} else {
+			PostService.getPost(postUrl)
+				.then((response) => {
 					dispatch({
 						type: 'EDIT_POST_SET_INIT_DATA',
 						initData: {
@@ -136,8 +134,10 @@ export function setInitDataForEditPost(username, postId) {
 							dataResponse: response
 						}
 					})
-				}
-			});
+				})
+				.catch(() => {
+					dispatch(createNewPost());
+				});
 		}
 	}
 }
@@ -151,17 +151,16 @@ export function editPost() {
 			return;
 		}
 		dispatch(editPostRequest());
-		Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
-			.then(() => {
+		PostService.editPost(title, tags, description, PostService.getPermlinkFromUrl(postData.url), postData.media[0])
+			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
-				setTimeout(() => {
-					dispatch(editPostSuccess());
-					dispatch(push(`/@${getUserName()}`))
-				}, 1700);
-			}).catch(error => {
-			dispatch(editPostReject(error));
-			dispatch(pushMessage(error.message));
-		})
+				dispatch(editPostSuccess(response));
+				dispatch(push(`/@${getUserName()}`))
+			})
+			.catch(error => {
+				dispatch(editPostReject(error));
+				dispatch(pushMessage(error.message));
+			})
 	}
 }
 
@@ -192,13 +191,13 @@ export function createPost() {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
-							return new Promise( resolve => {
+							return new Promise(resolve => {
 								resolve(blob);
 							});
 
 						})
 						.then(blob => {
-							return Steem.createPost(tags, title, description, blob)
+							return PostService.createPost(tags, title, description, blob)
 						})
 						.then(() => {
 							dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
@@ -248,7 +247,7 @@ function prepareData() {
 function getValidTagsString(str) {
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
-    result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
+		result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
 		result = result.trim();
 		result = result.replace(/\s\s/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');
@@ -273,7 +272,7 @@ function editPostChangeTags(tagsString) {
 
 function createNewPost() {
 	return dispatch => {
-		getCreateWaitingTime(getUserName())
+		UserService.getWaitingTimeForCreate(getUserName())
 			.then(response => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
@@ -302,9 +301,10 @@ function clearInputFields() {
 	}
 }
 
-export function editPostSuccess() {
+export function editPostSuccess(response) {
 	return {
-		type: 'EDIT_POST_SUCCESS'
+		type: 'EDIT_POST_SUCCESS',
+		response
 	};
 }
 
@@ -316,21 +316,16 @@ export function editPostReject(error) {
 }
 
 function checkTimeAfterUpdatedLastPost() {
-	return new Promise((resolve, reject) => {
-		getCreateWaitingTime(getUserName())
-			.then(response => {
-				const waitingTime = response['waiting_time'];
-				if (waitingTime !== 0) {
-					reject(waitingTime);
-				} else {
-					resolve();
-				}
-			})
-			.catch(() => {
-				resolve();
-			});
-		resolve();
-	})
+	return UserService.getWaitingTimeForCreate(getUserName())
+		.then(response => {
+			const waitingTime = response['waiting_time'];
+			if (waitingTime !== 0) {
+				return Promise.reject(waitingTime)
+			}
+			return Promise.resolve();
+		}).catch(() => {
+			return Promise.resolve();
+		});
 }
 
 function getCanvasWithImage(image, rotate) {

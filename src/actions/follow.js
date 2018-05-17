@@ -1,9 +1,6 @@
-import Steem from "../services/steem";
-import {debounce} from "lodash";
-import {updateUser} from "./usersList";
 import {getStore} from "../store/configureStore";
-import Constants from '../common/constants';
 import {pushMessage} from "./pushMessage";
+import UserService from "../services/userService";
 
 
 function toggleFollowRequest(author) {
@@ -13,49 +10,36 @@ function toggleFollowRequest(author) {
 	};
 }
 
-function toggleFollowSuccess(author) {
+function toggleFollowSuccess(author, response) {
 	return {
 		type: 'TOGGLE_FOLLOW_SUCCESS',
-		author
+		author,
+		response
 	};
 }
 
-function toggleFollowFailure(author) {
+function toggleFollowError(author, error) {
 	return {
-		type: 'TOGGLE_FOLLOW_FAILURE',
-		author
+		type: 'TOGGLE_FOLLOW_ERROR',
+		author,
+		error
 	};
 }
 
 export function toggleFollow(author) {
-	return function (dispatch) {
-		let state = getStore().getState();
-		let username = state.auth.user;
-		let postingKey = state.auth.postingKey;
-		let user = state.users[author];
-		const newFollowState = user.has_followed;
-
-		if (!username && !postingKey) {
-			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), 1000));
-			return;
-		}
-
+	const state = getStore().getState();
+	const followed = state.users[author]['has_followed'];
+	const followingName = state.users[author].username;
+	return dispatch => {
 		dispatch(toggleFollowRequest(author));
-
-		const callback = (err, success) => {
-			if (err) {
-				dispatch(toggleFollowFailure(author));
-				dispatch(pushMessage(err));
-			} else if (success) {
-				dispatch(updateUser(author));
-				let statusText = 'followed';
-				if (newFollowState) statusText = 'unfollowed';
-				dispatch(toggleFollowSuccess(author));
-				setTimeout(() => {
-					dispatch(pushMessage(`User has been successfully ${statusText}`));
-				}, 1000);
-			}
-		};
-		Steem.followUnfollowUser(postingKey, username, author, newFollowState, callback);
+		UserService.changeFollow(followingName, followed)
+			.then(response => {
+				dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed`));
+				dispatch(toggleFollowSuccess(author, response));
+			})
+			.catch(error => {
+				dispatch(pushMessage(error));
+				dispatch(toggleFollowError(author, error));
+			})
 	};
 }

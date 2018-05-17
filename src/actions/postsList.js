@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
-import {getPosts} from '../services/posts';
 import Constants from '../common/constants';
 import {serverErrorsList} from "../utils/serverErrorsList";
+import PostService from "../services/postService";
 
 export function initPostsList(options) {
 	return {
@@ -50,72 +50,62 @@ export function getPostsList(point) {
 	return (dispatch) => {
 		dispatch(getPostsListRequest(point));
 		let settings = getStore().getState().settings;
-		const requestOptions = {
-			point,
-			params: {
-				...{
-					offset: statePoint.offset,
-					show_nsfw: settings[Constants.SETTINGS.FIELDS.show_nsfw],
-					show_low_rated: settings[Constants.SETTINGS.FIELDS.show_low_rated],
-					limit: LIMIT
-				},
-				...statePoint.options
-			}
-		};
-		getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
-			//TODO удалить когда будут реальные видео в ленте
-			/*if (response.results[2]) {
-				const media = response.results[2].media[0];
-				media.url = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
-				if (media['thumbnails'] && media['thumbnails'][1024]) {
-					media['thumbnails'][1024] = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
-				}
-			}*/
-			let newPosts = response.results;
-			let hasMore = newPosts.length === LIMIT;
-			newPosts = removeDuplicate(newPosts);
-			newPosts = removeOldDuplicate(statePoint.posts, newPosts);
-			newPosts = removeDeleted(response, newPosts);
-			let notDeletedPosts = newPosts[0];
-			response = newPosts[1];
-			let posts = notDeletedPosts.map((post) => {
-				return post.url
-			});
-			if (statePoint.maxPosts <= posts.length + statePoint.posts.length) {
-				posts = posts.slice(0, statePoint.maxPosts - statePoint.posts.length);
-				hasMore = false;
-			}
-			let pointOptions = {
-				point,
-				posts,
-				offset: response.offset,
-				hasMore: hasMore,
-				length: posts.length,
-			};
 
-			let postsObject = {};
-			let postsLength = notDeletedPosts.length;
-			for (let i = 0; i < postsLength; i++) {
-				let post = Object.assign({}, notDeletedPosts[i], {
-					flagLoading: false,
-					voteLoading: false,
-					postDeleting: false,
-					isVideo: !!notDeletedPosts[i].media[0].url.match(/mp4$/i),
-          isGif: !!notDeletedPosts[i].media[0].url.match(/gif$/i),
-					playing: false
+		PostService.getPostsList(point, statePoint.offset, settings.show_nsfw, settings.show_low_rated, LIMIT, statePoint.options)
+			.then((response) => {
+				//TODO удалить когда будут реальные видео в ленте
+				/*if (response.results[2]) {
+					const media = response.results[2].media[0];
+					media.url = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
+					if (media['thumbnails'] && media['thumbnails'][1024]) {
+						media['thumbnails'][1024] = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
+					}
+				}*/
+				let newPosts = response.results;
+				let hasMore = newPosts.length === LIMIT;
+				newPosts = removeDuplicate(newPosts);
+				newPosts = removeOldDuplicate(statePoint.posts, newPosts);
+				newPosts = removeDeleted(response, newPosts);
+				let notDeletedPosts = newPosts[0];
+				response = newPosts[1];
+				let posts = notDeletedPosts.map((post) => {
+					return post.url
 				});
-				post.tags = (post.tags instanceof Array)
-					? post.tags
-					: post.tags.split(',');
-				postsObject[notDeletedPosts[i].url] = post;
-			}
-			notDeletedPosts = postsObject;
-			dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
-		})
-		.catch(error => {
-			let checkedError = serverErrorsList(error.message);
-			dispatch(getPostsListError(point, checkedError));
-		});
+				if (statePoint.maxPosts <= posts.length + statePoint.posts.length) {
+					posts = posts.slice(0, statePoint.maxPosts - statePoint.posts.length);
+					hasMore = false;
+				}
+				let pointOptions = {
+					point,
+					posts,
+					offset: response.offset,
+					hasMore: hasMore,
+					length: posts.length,
+				};
+
+				let postsObject = {};
+				let postsLength = notDeletedPosts.length;
+				for (let i = 0; i < postsLength; i++) {
+					let post = Object.assign({}, notDeletedPosts[i], {
+						flagLoading: false,
+						voteLoading: false,
+						postDeleting: false,
+						isVideo: !!notDeletedPosts[i].media[0].url.match(/mp4$/i),
+						isGif: !!notDeletedPosts[i].media[0].url.match(/gif$/i),
+						playing: false
+					});
+					post.tags = (post.tags instanceof Array)
+						? post.tags
+						: post.tags.split(',');
+					postsObject[notDeletedPosts[i].url] = post;
+				}
+				notDeletedPosts = postsObject;
+				dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
+			})
+			.catch(error => {
+				let checkedError = serverErrorsList(error.message);
+				dispatch(getPostsListError(point, checkedError));
+			});
 	};
 }
 
