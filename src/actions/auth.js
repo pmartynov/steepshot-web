@@ -11,7 +11,7 @@ import ChainService from '../services/chainService';
 import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
-import StorageSerive from "../services/storageService";
+import StorageSerive from '../services/storageService';
 
 export function showMessage(message) {
 	return dispatch => {

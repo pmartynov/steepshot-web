@@ -89,6 +89,15 @@
     }
 }
 
+@media (max-width: 350px) {
+    .text-wrapper_advertising p {
+        font: 12px OpenSans-Regular;
+    }
+    .text-wrapper_advertising a {
+        font: 12px OpenSans-Semibold;
+    }
+}
+
 @media (min-width: 300px) and (max-width: 767px) {
     .sub-wrapper_advertising {
         width: 100%;

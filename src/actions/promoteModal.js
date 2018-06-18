@@ -139,13 +139,12 @@ export function sendBid(steemLink, wif, botName) {
   promoteAmount = promoteAmount.replace(/(\d+\.\d{3})(\d*)/, '$1');
   let transferInfo = {
     wif: activeKey,
-    recipient: 'dmitryorelopt',
+    recipient: botName,
     amount: promoteAmount + ' ' + promoteModal.selectedToken,
     postLink: steemLink
   };
-  console.log(transferInfo);
   return dispatch => {
-    /*if (state.session.actionLocked) {
+    if (state.session.actionLocked) {
       return;
     }
     dispatch(actionLock());
@@ -161,6 +160,6 @@ export function sendBid(steemLink, wif, botName) {
         dispatch(actionUnlock());
         dispatch(setBidRequest(false));
         dispatch(pushErrorMessage(error));
-      });*/
+      });
   }
 }

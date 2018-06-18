@@ -37,7 +37,6 @@ class SendBidModal extends React.Component {
   }
 
   render() {
-    console.log(this.props.steemLink, this.props.botName);
     let redTimer = '', blockedTimer = '';
     let sendBid = 'SEND BID';
     if (this.props.sendingBid) {
