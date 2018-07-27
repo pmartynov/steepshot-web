@@ -25,15 +25,18 @@ const InOutSteem = ({balance, total_steem_power_steem, newSteem, newSteemPower})
 const mapStateToProps = (state, props) => {
   const {amount} = state.wallet;
   const {balance, total_steem_power_steem} = state.userProfile.profile;
-  let newSteem;
-  let newSteemPower;
+  let newSteem, newSteemPower;
+  let tokensAmount = +amount;
+  if (isNaN(tokensAmount)) {
+    tokensAmount = 0;
+  }
   if (props.point === 'power-up') {
-    newSteem = balance - amount;
-    newSteemPower = total_steem_power_steem + +amount;
+    newSteem = balance - tokensAmount;
+    newSteemPower = total_steem_power_steem + tokensAmount;
   }
   if (props.point === 'power-down') {
-    newSteem = balance + +amount;
-    newSteemPower = total_steem_power_steem - amount;
+    newSteem = balance + tokensAmount ;
+    newSteemPower = total_steem_power_steem - tokensAmount;
   }
   return {
     balance,

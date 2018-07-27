@@ -11,6 +11,7 @@ import AuthService from '../../services/AuthService';
 class MobileNavigation extends React.Component {
 
 	handleLogout(event) {
+		console.log('click');
 		event.preventDefault();
 		this.props.closeMobileNavigation();
 		this.props.logout();

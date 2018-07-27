@@ -11,8 +11,7 @@ class TabsBar extends React.Component {
 		className: '',
 		alwaysShowNavigation: false,
 		showLoader: true,
-		changeIndex: () => {
-		}
+		changeIndex: () => {}
 	};
 
 	componentDidUpdate() {

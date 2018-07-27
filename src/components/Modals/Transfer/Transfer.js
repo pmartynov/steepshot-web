@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import './transfer.css';
 import ChooseToken from '../../Common/ChooseToken/ChooseToken';
 import {changeMemo, changeUsername, showMemo, transfer} from '../../../actions/transfer';
-import ShowIf from "../../Common/ShowIf";
-import {closeModal} from "../../../actions/modal";
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
-import {changeAmount, setToken} from "../../../actions/wallet";
+import ShowIf from '../../Common/ShowIf';
+import {closeModal} from '../../../actions/modal';
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
+import {changeAmount, setNotValidAmountTokens, setToken} from '../../../actions/wallet';
 import {closeContextMenu} from '../../../actions/contextMenu';
 
 class Transfer extends React.Component {
@@ -17,6 +17,7 @@ class Transfer extends React.Component {
 		this.changeUsername = this.changeUsername.bind(this);
 		this.changeMemo = this.changeMemo.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
+		this.sendTransfer = this.sendTransfer.bind(this);
 	}
 
 	changeUsername(e) {
@@ -31,6 +32,10 @@ class Transfer extends React.Component {
 		this.props.changeMemo(e.target.value);
 	}
 
+	sendTransfer() {
+    this.props.setNotValidAmountTokens(this.props.amount, this.props.transfer);
+	}
+
 	/*setAmountRef(ref) {
 		this.amount = ref;
 	}
@@ -40,14 +45,14 @@ class Transfer extends React.Component {
 	}*/
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo,
-			tokensNames, closeChooseTokens, closeTransferModal, transfer} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo, tokensNames,
+			closeChooseTokens, closeTransferModal} = this.props;
 		return (
 			<WalletPopupTemplate title="TRANSFER"
 			                     username={username}
 			                     textButton="SEND"
 			                     cancel={closeTransferModal}
-			                     ok={transfer}
+			                     ok={this.sendTransfer}
 													 mainClick={closeChooseTokens}>
 				<form className="body_transfer" autoComplete="off">
 					<div className="form-line_transfer">
@@ -56,7 +61,8 @@ class Transfer extends React.Component {
 						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input type='text' placeholder="username" onChange={this.changeUsername} maxLength={16} value={to} autoComplete="off"/>
+							<input type='text' placeholder="username" onChange={this.changeUsername} maxLength={30} value={to}
+										 autoComplete="off"/>
 						</div>
 						<label className="recipient-error_transfer">{toError}</label>
 					</div>
@@ -132,7 +138,10 @@ const mapDispatchToProps = dispatch => {
 		},
     closeChooseTokens: () => {
 			dispatch(closeContextMenu("chooseToken"));
-		}
+		},
+    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
+      dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
+    }
 	}
 };
 

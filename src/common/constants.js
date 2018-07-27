@@ -254,9 +254,9 @@ const Constants = {
 	},
 
 	PROMOTE: {
-		INPUT_ERROR: 'Enter correct value',
-		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
-		MAX_AMOUNT_ERROR: 'Max bid is 100',
+		INPUT_ERROR: 'Enter correct value.',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.5.',
+		MAX_AMOUNT_ERROR: 'Max bid is 100.',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,

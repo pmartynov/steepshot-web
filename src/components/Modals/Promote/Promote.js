@@ -65,7 +65,6 @@ class Promote extends React.Component {
 			return false;
 		}
 		let amount = this.props.amount.toString();
-		amount = amount.trim();
 		amount = amount.match(/\d+(\.\d+)?/);
 		if (amount[0] === amount.input) return true;
 		this.props.setPromoteInputError(Constants.PROMOTE.INPUT_ERROR);
