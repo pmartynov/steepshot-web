@@ -4,10 +4,19 @@ import './powerUp.css';
 import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import {closeModal} from '../../../actions/modal';
 import PowerForm from '../../Common/PowerForm/PowerForm';
-import {changeAmount, powerUp} from '../../../actions/wallet';
+import {changeAmount, powerUp, setNotValidAmountTokens} from '../../../actions/wallet';
 import InOutSteem from '../WalletPopupTemplate/InOutSteem/InOutSteem';
 
 class PowerUp extends React.Component {
+
+	constructor() {
+		super();
+		this.sendPowerUp = this.sendPowerUp.bind(this);
+	}
+
+  sendPowerUp() {
+    this.props.setNotValidAmountTokens(this.props.amount, this.props.powerUp);
+  }
 
 	render() {
 		const {username, balance, amount, token, amountError} = this.props;
@@ -16,7 +25,7 @@ class PowerUp extends React.Component {
 			                     username={username}
 			                     textButton="POWER UP"
 			                     cancel={this.props.closePowerUpModal}
-			                     ok={this.props.powerUp}>
+			                     ok={this.sendPowerUp}>
 				<InOutSteem point="power-up"/>
 				<div className="description_power-up">
 					Tokens give you the ability to influence the reward for content, as well as the ability to earn content from
@@ -61,7 +70,10 @@ const mapDispatchToProps = dispatch => {
 		},
 		changeAmount: value => {
 			dispatch(changeAmount(value))
-		}
+		},
+    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
+      dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
+    }
 	}
 };
 

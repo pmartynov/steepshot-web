@@ -18,16 +18,25 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
     changeAmount(e.target.value);
   }
 
+  function openSelectToken(e) {
+    e.stopPropagation();
+    openContextMenu(pointContextMenu)
+  }
+
+  function onClickForMenuItem(index) {
+    closeContextMenu(pointContextMenu);
+    if (selectedItemNumber !== index) {
+      setToken(index);
+    }
+  }
+
   return (
 		<div className="container_choose-token">
 			<div className="relative-wrapper_choose-token">
 				<GrayInput label={label} placeholder="e.g. 100" onChange={onChangeAmount} value={value} ref={reference}
 									 onFocus={onFocus} error={error} maxLength={12}/>
 				<div className="token-amount_power-form"
-						 onClick={(e) => {
-               e.stopPropagation();
-               openContextMenu(pointContextMenu)
-             }}>
+						 onClick={openSelectToken}>
 					<div className="balance_power-form">Balance: {tokensAmount}</div>
 					<div className="wrapper-choose-token_choose-token">
 						<div className="choose-token_choose-token">{tokensNames[selectedItemNumber]}</div>
@@ -42,12 +51,7 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
 								key={index}
 								isActive={index === selectedItemNumber}
 								label={token}
-								onClick={() => {
-                  closeContextMenu(pointContextMenu);
-                  if (selectedItemNumber !== index) {
-                    setToken(index);
-                  }
-                }}
+								onClick={() => {onClickForMenuItem(index)}}
 							/>
             )}
 					</div>

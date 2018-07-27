@@ -26,6 +26,10 @@
     position: relative;
 }
 
+.blocked-block_settings .container_block-loader {
+    z-index: 9;
+}
+
 .header_settings {
     padding: 25px 0;
     border-bottom: 1px solid #f4f4f6;

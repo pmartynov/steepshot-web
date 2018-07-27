@@ -4,11 +4,20 @@ import './powerDown.css';
 import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import {closeModal} from '../../../actions/modal';
 import PowerForm from '../../Common/PowerForm/PowerForm';
-import {changeAmount, powerDown} from '../../../actions/wallet';
+import {changeAmount, powerDown, setNotValidAmountTokens} from '../../../actions/wallet';
 import InOutSteem from '../WalletPopupTemplate/InOutSteem/InOutSteem';
 import Constants from '../../../common/constants';
 
 class PowerDown extends React.Component {
+
+	constructor() {
+		super();
+		this.startPowerDown = this.startPowerDown.bind(this);
+	}
+
+	startPowerDown() {
+    this.props.setNotValidAmountTokens(this.props.amount, this.props.powerDown);
+	}
 
 	render() {
 		const {username, balance, amount, amountError} = this.props;
@@ -59,6 +68,9 @@ const mapDispatchToProps = dispatch => {
 		},
 		changeAmount: value => {
 			dispatch(changeAmount(value))
+		},
+    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
+			dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
 		}
 	}
 };

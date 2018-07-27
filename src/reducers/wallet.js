@@ -18,7 +18,7 @@ export default function wallet(state = initialState, action) {
 		case 'WALLET_CHANGE_AMOUNT':
 			return {
 				...state,
-				amount: parseInt(action.value, 10),
+				amount: action.value,
 				amountError: ''
 			};
 		case 'TRANSFER_ERROR':

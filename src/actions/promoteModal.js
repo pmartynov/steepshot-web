@@ -55,9 +55,12 @@ export function addPostIndex(postIndex) {
 }
 
 export function setPromoteInputError(error) {
-	return {
-		type: 'SET_PROMOTE_INPUT_ERROR',
-		error
+  return dispatch => {
+		dispatch({
+			type: 'SET_PROMOTE_INPUT_ERROR',
+			error
+		});
+		if (error) dispatch(pushMessage(error));
 	}
 }
 

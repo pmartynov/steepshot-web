@@ -38,9 +38,3 @@
     background-color: #4a90e2;
     margin: -1px 0 0 30px;
 }
-
-@media (max-width: 385px) {
-    .container_switcher {
-        margin-bottom: 20px;
-    }
-}
