@@ -1,10 +1,10 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './transactionFilter.css';
-import ContextMenu from "../../../Common/ContextMenu/ContextMenu";
-import {closeContextMenu, openContextMenu} from "../../../../actions/contextMenu";
-import SettingsButton from "../SettingsButton/SettingsButton";
-import FilterRow from "./FilterRow/FilterRow";
+import ContextMenu from '../../../Common/ContextMenu/ContextMenu';
+import {closeContextMenu, openContextMenu} from '../../../../actions/contextMenu';
+import SettingsButton from '../SettingsButton/SettingsButton';
+import FilterRow from './FilterRow/FilterRow';
 
 const TransactionFilter = ({filter, current, onChange, pointContextMenu, openContextMenu, closeContextMenu, show}) => {
 	return (

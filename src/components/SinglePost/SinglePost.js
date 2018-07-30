@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
 import './singlePost.css';
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getTags} from "../../actions/metaTags";
-import Utils from "../../utils/Utils";
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getTags} from '../../actions/metaTags';
+import Utils from '../../utils/Utils';
 import LoggingService from '../../services/LoggingService';
 import PostService from '../../services/PostService';
 

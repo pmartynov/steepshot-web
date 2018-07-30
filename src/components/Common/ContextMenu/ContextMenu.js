@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './contextMenu.css';
-import PropTypes from "prop-types";
-import ShowIf from "../ShowIf";
-import {closeContextMenu} from "../../../actions/contextMenu";
+import PropTypes from 'prop-types';
+import ShowIf from '../ShowIf';
+import {closeContextMenu} from '../../../actions/contextMenu';
 
 class ContextMenu extends React.Component {
 

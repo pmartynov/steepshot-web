@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import Utils from "../../utils/Utils";
+import Utils from '../../utils/Utils';
 import './switcher.css';
 
 const Switcher = ({onClick, leftLabel = '', rightLabel = '', left, leftColor, rightColor}) => (

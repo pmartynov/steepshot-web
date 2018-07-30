@@ -6,9 +6,9 @@ import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
 import Utils from '../../utils/Utils';
 import Constants from '../../common/constants';
-import InfinityScroll from "../InfinityScroll/InfinityScroll";
-import ShowIf from "../Common/ShowIf";
-import LoadingSpinner from "../LoadingSpinner";
+import InfinityScroll from '../InfinityScroll/InfinityScroll';
+import ShowIf from '../Common/ShowIf';
+import LoadingSpinner from '../LoadingSpinner';
 
 class PostsList extends React.Component {
 	static defaultProps = {

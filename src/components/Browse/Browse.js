@@ -2,15 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import {push, replace} from "react-router-redux";
-import TabsBar from "../Common/TabsBar/TabsBar";
-import Tab from "../Common/TabsBar/Tab/Tab";
-import {setActiveIndex} from "../../actions/tabsBar";
-import Constants from "../../common/constants";
-import storage from "../../utils/Storage";
-import Utils from "../../utils/Utils";
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import {push, replace} from 'react-router-redux';
+import TabsBar from '../Common/TabsBar/TabsBar';
+import Tab from '../Common/TabsBar/Tab/Tab';
+import {setActiveIndex} from '../../actions/tabsBar';
+import Constants from '../../common/constants';
+import storage from '../../utils/Storage';
+import Utils from '../../utils/Utils';
 
 class Browse extends React.Component {
 

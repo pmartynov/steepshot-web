@@ -12,7 +12,7 @@ import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
-import MarkdownParser from "../../../utils/markdownParser";
+import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
 
 class Comment extends React.Component {

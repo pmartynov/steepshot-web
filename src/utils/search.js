@@ -1,4 +1,4 @@
-import Utils from "./Utils";
+import Utils from './Utils';
 
 export function insertCategory(point, category) {
 	if (category === undefined) return point;

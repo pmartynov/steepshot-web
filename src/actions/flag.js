@@ -2,10 +2,10 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import {pushErrorMessage, pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./session";
-import PostService from "../services/PostService";
-import AuthService from "../services/AuthService";
+import {pushErrorMessage, pushMessage} from './pushMessage';
+import {actionLock, actionUnlock} from './session';
+import PostService from '../services/PostService';
+import AuthService from '../services/AuthService';
 
 function toggleFlagRequest(postIndex) {
 	return {

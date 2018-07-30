@@ -1,6 +1,6 @@
-import {getStore} from "../store/configureStore";
-import AuthService from "../services/AuthService";
-import TransactionService from "../services/TransactionService";
+import {getStore} from '../store/configureStore';
+import AuthService from '../services/AuthService';
+import TransactionService from '../services/TransactionService';
 
 const COUNT_TRANSACTION = 20;
 

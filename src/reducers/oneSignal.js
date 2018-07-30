@@ -1,4 +1,4 @@
-import Constants from "../common/constants";
+import Constants from '../common/constants';
 
 const initialState = {
 	appId: Constants.ONE_SIGNAL.APP_ID,

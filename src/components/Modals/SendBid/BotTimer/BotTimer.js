@@ -1,6 +1,6 @@
 import React from 'react';
-import Timer from "../../../Common/Timer/Timer";
-import {loadingEllipsis} from "../../../../utils/loadingEllipsis";
+import Timer from '../../../Common/Timer/Timer';
+import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
 import './botTimer.css';
 
 const BotTimer = ({isRead, isBlocked, upvoteTime, tick}) => {

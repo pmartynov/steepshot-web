@@ -1,4 +1,4 @@
-import GolosService from "./GolosService";
+import GolosService from './GolosService';
 
 class ChainService {
 	static currentService = null;

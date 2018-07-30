@@ -20,7 +20,7 @@ import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
 import ImagesService from '../../../services/ImagesService';
 import PostImgBackground from './PostImgBackground';
-import ChainService from "../../../services/ChainService";
+import ChainService from '../../../services/ChainService';
 
 class Post extends React.Component {
 

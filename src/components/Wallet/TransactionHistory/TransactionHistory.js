@@ -1,12 +1,12 @@
 import React from 'react';
 import './transactionHistory.css';
-import {connect} from "react-redux";
-import Transaction from "./Transaction/Transaction";
-import TransactionFilter from "./TransactionFilter/TransactionFilter";
-import InfinityScroll from "../../InfinityScroll/InfinityScroll";
-import ShowIf from "../../Common/ShowIf";
-import LoadingSpinner from "../../LoadingSpinner";
-import {changeTransactionFilter, getTransactionHistory} from "../../../actions/transactionHistory";
+import {connect} from 'react-redux';
+import Transaction from './Transaction/Transaction';
+import TransactionFilter from './TransactionFilter/TransactionFilter';
+import InfinityScroll from '../../InfinityScroll/InfinityScroll';
+import ShowIf from '../../Common/ShowIf';
+import LoadingSpinner from '../../LoadingSpinner';
+import {changeTransactionFilter, getTransactionHistory} from '../../../actions/transactionHistory';
 
 class TransactionHistory extends React.Component {
 

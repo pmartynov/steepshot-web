@@ -4,20 +4,20 @@ import Constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {push, replace} from 'react-router-redux';
-import TabsBar from "../Common/TabsBar/TabsBar";
-import Tab from "../Common/TabsBar/Tab/Tab";
-import {getUserProfile} from "../../actions/userProfile";
-import ShowIf from "../Common/ShowIf";
-import LoadingSpinner from "../LoadingSpinner";
+import TabsBar from '../Common/TabsBar/TabsBar';
+import Tab from '../Common/TabsBar/Tab/Tab';
+import {getUserProfile} from '../../actions/userProfile';
+import ShowIf from '../Common/ShowIf';
+import LoadingSpinner from '../LoadingSpinner';
 import './userProfile.css';
-import {setActiveIndex} from "../../actions/tabsBar";
-import Follow from "../Follow/Follow";
-import AuthService from "../../services/AuthService";
+import {setActiveIndex} from '../../actions/tabsBar';
+import Follow from '../Follow/Follow';
+import AuthService from '../../services/AuthService';
 import renderHTML from 'react-render-html';
-import MarkdownParser from "../../utils/markdownParser";
+import MarkdownParser from '../../utils/markdownParser';
 
 class UserProfile extends React.Component {
 

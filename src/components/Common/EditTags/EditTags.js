@@ -1,6 +1,6 @@
 import React from 'react';
 import './editTags.css';
-import Utils from "../../../utils/Utils";
+import Utils from '../../../utils/Utils';
 
 class EditTags extends React.Component {
 

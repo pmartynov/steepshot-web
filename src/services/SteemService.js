@@ -1,8 +1,8 @@
 import steem from 'steem';
-import Constants from "../common/constants";
-import PostService from "./PostService";
-import AuthService from "./AuthService";
-import SteemNodeService from "./SteemNodeService";
+import Constants from '../common/constants';
+import PostService from './PostService';
+import AuthService from './AuthService';
+import SteemNodeService from './SteemNodeService';
 
 let dynamicProps = [];
 steem.api.getDynamicGlobalProperties((err, result) => {

@@ -5,9 +5,9 @@ import './description.css';
 import ShowIf from '../../Common/ShowIf';
 import PromoteModal from '../../Modals/Promote/Promote';
 import {openModal} from '../../../actions/modal';
-import MarkdownParser from "../../../utils/markdownParser";
+import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
-import ChainService from "../../../services/ChainService";
+import ChainService from '../../../services/ChainService';
 
 class Description extends React.Component {
 

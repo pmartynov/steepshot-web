@@ -1,5 +1,5 @@
-import ImageCompressor from "image-compressor.js";
-import Constants from "../common/constants";
+import ImageCompressor from 'image-compressor.js';
+import Constants from '../common/constants';
 
 export function compressJPEG(blob, quality = 1) {
 	return new Promise((resolve, reject) => {

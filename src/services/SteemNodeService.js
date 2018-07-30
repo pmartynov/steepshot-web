@@ -1,5 +1,5 @@
-import steem from "steem";
-import Constants from "../common/constants";
+import steem from 'steem';
+import Constants from '../common/constants';
 
 const MAX_COUNT_TRY = 3;
 let currentNode = 0;

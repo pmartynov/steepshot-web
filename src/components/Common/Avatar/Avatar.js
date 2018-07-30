@@ -6,7 +6,7 @@ import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 import ImagesService from '../../../services/ImagesService';
 import AvaImgBackground from './AvaImgBackground';
-import Utils from "../../../utils/Utils";
+import Utils from '../../../utils/Utils';
 
 class Avatar extends React.Component {
 

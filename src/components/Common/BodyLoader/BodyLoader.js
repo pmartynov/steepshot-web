@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import BlockLoader from "../BlockLoader/BlockLoader";
+import BlockLoader from '../BlockLoader/BlockLoader';
 
 const BodyLoader = ({loading}) => (
 	<BlockLoader show={loading}/>

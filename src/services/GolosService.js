@@ -1,8 +1,8 @@
 import golos from 'golos-js';
-import Constants from "../common/constants";
-import PostService from "./PostService";
-import AuthService from "./AuthService";
-import steem from "steem";
+import Constants from '../common/constants';
+import PostService from './PostService';
+import AuthService from './AuthService';
+import steem from 'steem';
 
 class GolosService {
 

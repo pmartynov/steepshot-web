@@ -2,9 +2,9 @@ import Constants from '../common/constants';
 import ChainService from './ChainService';
 import SteemService from './SteemService';
 import GolosService from './GolosService';
-import AuthService from "./AuthService";
-import SteemConnect from "./SteemConnect";
-import Utils from "../utils/Utils";
+import AuthService from './AuthService';
+import SteemConnect from './SteemConnect';
+import Utils from '../utils/Utils';
 
 let config = Constants.SERVICES.steem;
 

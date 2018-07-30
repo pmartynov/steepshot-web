@@ -1,5 +1,5 @@
-import Constants from "../common/constants";
-import Utils from "../utils/Utils";
+import Constants from '../common/constants';
+import Utils from '../utils/Utils';
 
 export default function windowOnStore(state = getActualState(), action) {
 	switch (action.type) {

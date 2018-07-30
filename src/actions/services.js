@@ -1,7 +1,7 @@
-import RequestService from "../services/RequestService";
-import Constants from "../common/constants";
-import {getStore} from "../store/configureStore";
-import storage from "../utils/Storage";
+import RequestService from '../services/RequestService';
+import Constants from '../common/constants';
+import {getStore} from '../store/configureStore';
+import storage from '../utils/Storage';
 
 export function setService(serviceName = storage.service || Constants.SERVICES.steem.name) {
 	RequestService.init(serviceName);

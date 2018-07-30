@@ -16,8 +16,8 @@ const Constants = {
 		},
 		steem: {
 			name: 'steem',
-			baseUrl: 'https://qa.steepshot.org/api/v1_1',
-			loggingUrl: 'https://qa.steepshot.org/api/v1',
+			baseUrl: 'https://steepshot.org/api/v1_1',
+			loggingUrl: 'https://steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
 			PERCENT_STEEM_DOLLARS: 10000,
 			TAGS: {

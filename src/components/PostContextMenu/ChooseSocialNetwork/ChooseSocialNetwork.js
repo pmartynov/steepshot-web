@@ -14,8 +14,8 @@ import {
 	VKShareButton
 } from 'react-share';
 import './chooseSocialNetwork.css';
-import Constants from "../../../common/constants";
-import ChainService from "../../../services/ChainService";
+import Constants from '../../../common/constants';
+import ChainService from '../../../services/ChainService';
 
 class ChooseSocialNetwork extends React.Component {
 

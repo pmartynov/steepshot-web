@@ -1,10 +1,10 @@
 import React from 'react';
 import './widgetToken.css';
-import ShowIf from "../../Common/ShowIf";
-import ContextMenu from "../../Common/ContextMenu/ContextMenu";
-import {connect} from "react-redux";
-import {closeContextMenu, openContextMenu} from "../../../actions/contextMenu";
-import ActionRow from "./ActionRow/ActionRow";
+import ShowIf from '../../Common/ShowIf';
+import ContextMenu from '../../Common/ContextMenu/ContextMenu';
+import {connect} from 'react-redux';
+import {closeContextMenu, openContextMenu} from '../../../actions/contextMenu';
+import ActionRow from './ActionRow/ActionRow';
 
 class WidgetToken extends React.Component {
 

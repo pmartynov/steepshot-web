@@ -9,10 +9,10 @@ import {
 	setBlockedTimer,
 	setRedTimer
 } from '../../../actions/promoteModal';
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import BotTimer from "./BotTimer/BotTimer";
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import BotTimer from './BotTimer/BotTimer';
 import {setActiveKeyInputSecurity} from '../../../actions/activeKey';
-import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
+import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
 
 class SendBid extends React.Component {
 

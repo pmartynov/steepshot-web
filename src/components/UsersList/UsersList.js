@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import InfinityScroll from "../InfinityScroll/InfinityScroll";
+import InfinityScroll from '../InfinityScroll/InfinityScroll';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../../utils/documentTitle';
 import User from './User/User';
 import './usersList.css';
-import Utils from "../../utils/Utils";
-import Constants from "../../common/constants";
-import ShowIf from "../Common/ShowIf";
-import LoadingSpinner from "../LoadingSpinner";
+import Utils from '../../utils/Utils';
+import Constants from '../../common/constants';
+import ShowIf from '../Common/ShowIf';
+import LoadingSpinner from '../LoadingSpinner';
 
 class UsersList extends React.Component {
 	static defaultProps = {

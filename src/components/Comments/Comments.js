@@ -8,7 +8,7 @@ import Description from './Description/Description';
 import CommentInput from './CommentInput/CommentInput';
 import {Scrollbars} from 'react-custom-scrollbars';
 import './comments.css';
-import AuthService from "../../services/AuthService";
+import AuthService from '../../services/AuthService';
 
 class Comments extends React.Component {
 

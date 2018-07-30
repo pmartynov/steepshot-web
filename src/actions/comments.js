@@ -1,11 +1,11 @@
-import {getStore} from "../store/configureStore";
-import {blurredTextInput, clearTextInputState, focusedTextInput, setTextInputState} from "./textInput";
-import {pushErrorMessage, pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./session";
-import Constants from "../common/constants";
-import CommentService from "../services/CommentService";
-import PostService from "../services/PostService";
-import {serverErrorsList} from "../utils/serverErrorsList";
+import {getStore} from '../store/configureStore';
+import {blurredTextInput, clearTextInputState, focusedTextInput, setTextInputState} from './textInput';
+import {pushErrorMessage, pushMessage} from './pushMessage';
+import {actionLock, actionUnlock} from './session';
+import Constants from '../common/constants';
+import CommentService from '../services/CommentService';
+import PostService from '../services/PostService';
+import {serverErrorsList} from '../utils/serverErrorsList';
 
 export function initPostComment(point) {
 	return {

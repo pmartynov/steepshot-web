@@ -1,15 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {updateVotingPower} from '../../actions/auth';
-import PushMessage from "./PushMessage/PushMessage";
-import PushNotifications from "../PushNotifications/PushNotifications";
-import Clipboard from "./Clipboard/Clipboard";
-import Modals from "../Modals/Modals";
-import {resizeWindow} from "../../actions/utils";
-import MobileNavigation from "../MobileNavigation/MobileNavigation";
-import {loadSubscribeData} from "../../actions/oneSignal";
-import {setService} from "../../actions/services";
-import BodyLoader from "./BodyLoader/BodyLoader";
+import PushMessage from './PushMessage/PushMessage';
+import PushNotifications from '../PushNotifications/PushNotifications';
+import Clipboard from './Clipboard/Clipboard';
+import Modals from '../Modals/Modals';
+import {resizeWindow} from '../../actions/utils';
+import MobileNavigation from '../MobileNavigation/MobileNavigation';
+import {loadSubscribeData} from '../../actions/oneSignal';
+import {setService} from '../../actions/services';
+import BodyLoader from './BodyLoader/BodyLoader';
 
 class FunctionalUtils extends React.Component {
 

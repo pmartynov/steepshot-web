@@ -2,26 +2,22 @@
     display: flex;
     border-bottom: 1px solid #f4f4f6;
     padding: 15px 0;
+    flex-direction: column;
 }
 
 .wrapper_in-out-steem div:not(.border-line_in-out-steem) {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    width: 100%;
 }
 
 .steem-amount_in-out-steem {
-    padding-right: 21px;
+    padding: 0 0 15px 0;
 }
 
 .steem-power-amount_in-out-steem {
-    padding-left: 20px;
-}
-
-.border-line_in-out-steem {
-    height: 20px;
-    width: 1px;
-    background-color: #f4f4f6;
+    padding: 15px 0 0 0;
+    border-top: 1px solid #f4f4f6;
 }
 
 .start-balance_in-out-steem {
@@ -33,23 +29,4 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 50px;
-}
-
-@media (max-width: 500px) {
-    .border-line_in-out-steem {
-        display: none;
-    }
-    .wrapper_in-out-steem {
-        flex-direction: column;
-    }
-    .wrapper_in-out-steem div:not(.border-line_in-out-steem) {
-        width: 100%;
-    }
-    .steem-amount_in-out-steem {
-        padding: 0 0 15px 0;
-    }
-    .steem-power-amount_in-out-steem {
-        padding: 15px 0 0 0;
-        border-top: 1px solid #f4f4f6;
-    }
 }

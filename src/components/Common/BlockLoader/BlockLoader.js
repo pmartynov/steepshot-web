@@ -1,7 +1,7 @@
 import React from 'react';
 import ShowIf from '../ShowIf';
-import LoadingSpinner from "../../LoadingSpinner";
-import PropTypes from "prop-types";
+import LoadingSpinner from '../../LoadingSpinner';
+import PropTypes from 'prop-types';
 import './blockLoader.css';
 
 const BlockLoader = ({show, withLoader}) => (

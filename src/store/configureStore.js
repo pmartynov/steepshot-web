@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import {createLogger} from 'redux-logger';
 import rootReducer from '../reducers';
-import {routerMiddleware} from "react-router-redux";
+import {routerMiddleware} from 'react-router-redux';
 
 let storeBase;
 

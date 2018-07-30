@@ -1,5 +1,5 @@
-import Constants from "../common/constants";
-import storage from "../utils/Storage";
+import Constants from '../common/constants';
+import storage from '../utils/Storage';
 
 const initialState = storage.settings || Constants.SETTINGS.DEFAULT;
 

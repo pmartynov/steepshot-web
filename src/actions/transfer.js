@@ -1,12 +1,12 @@
-import {getStore} from "../store/configureStore";
-import {actionLock, actionUnlock} from "./session";
-import WalletService from "../services/WalletService";
-import Constants from "../common/constants";
-import {pushMessage} from "./pushMessage";
-import {closeModal} from "./modal";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import storage from "../utils/Storage";
-import {blockchainErrorsList} from "../utils/blockchainErrorsList";
+import {getStore} from '../store/configureStore';
+import {actionLock, actionUnlock} from './session';
+import WalletService from '../services/WalletService';
+import Constants from '../common/constants';
+import {pushMessage} from './pushMessage';
+import {closeModal} from './modal';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import storage from '../utils/Storage';
+import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
 export function showMemo() {
 	return {

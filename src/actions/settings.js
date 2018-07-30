@@ -2,8 +2,8 @@ import {getStore} from '../store/configureStore';
 import {setSubscribeOnBackend, subscribe} from './oneSignal';
 import storage from '../utils/Storage';
 import {pushMessage} from './pushMessage';
-import Constants from "../common/constants";
-import Utils from "../utils/Utils";
+import Constants from '../common/constants';
+import Utils from '../utils/Utils';
 
 export function checkSubscribeAndUpdateSettings() {
 	return dispatch => {

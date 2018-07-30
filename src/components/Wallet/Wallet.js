@@ -1,19 +1,19 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './wallet.css';
-import WidgetToken from "./WidgetToken/WidgetToken";
-import TransactionHistory from "./TransactionHistory/TransactionHistory";
-import LoadingSpinner from "../LoadingSpinner";
-import {getUserProfile} from "../../actions/userProfile";
-import Utils from "../../utils/Utils";
-import {openModal} from "../../actions/modal";
-import Transfer from "../Modals/Transfer/Transfer";
-import ShowIf from "../Common/ShowIf";
-import PowerUp from "../Modals/PowerUp/PowerUp";
-import PowerDown from "../Modals/PowerDown/PowerDown";
-import ChainService from "../../services/ChainService";
-import {setToken} from "../../actions/wallet";
-import {documentTitle} from "../../utils/documentTitle";
+import WidgetToken from './WidgetToken/WidgetToken';
+import TransactionHistory from './TransactionHistory/TransactionHistory';
+import LoadingSpinner from '../LoadingSpinner';
+import {getUserProfile} from '../../actions/userProfile';
+import Utils from '../../utils/Utils';
+import {openModal} from '../../actions/modal';
+import Transfer from '../Modals/Transfer/Transfer';
+import ShowIf from '../Common/ShowIf';
+import PowerUp from '../Modals/PowerUp/PowerUp';
+import PowerDown from '../Modals/PowerDown/PowerDown';
+import ChainService from '../../services/ChainService';
+import {setToken} from '../../actions/wallet';
+import {documentTitle} from '../../utils/documentTitle';
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.

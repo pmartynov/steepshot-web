@@ -35,12 +35,12 @@ import scroll from './scroll';
 import promoteModal from './promoteModal';
 import images from './images';
 import emptyRequestError from './emptyRequestError';
-import transactionHistory from "./transactionHistory";
-import contextMenu from "./contextMenu";
-import transfer from "./transfer";
-import activeKey from "./activeKey";
-import power from "./power";
-import wallet from "./wallet";
+import transactionHistory from './transactionHistory';
+import contextMenu from './contextMenu';
+import transfer from './transfer';
+import activeKey from './activeKey';
+import power from './power';
+import wallet from './wallet';
 
 export default combineReducers({
 	clipboard,

@@ -3,15 +3,15 @@ import PostsList from '../PostsList/PostsList';
 import {documentTitle} from '../../utils/documentTitle';
 import {insertCategory} from '../../utils/search';
 import UsersList from '../UsersList/UsersList';
-import TabsBar from "../Common/TabsBar/TabsBar";
-import {connect} from "react-redux";
-import Tab from "../Common/TabsBar/Tab/Tab";
-import ShowIf from "../Common/ShowIf";
-import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
-import {pageLoading} from "../../actions/tabsBar";
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import Constants from "../../common/constants";
+import TabsBar from '../Common/TabsBar/TabsBar';
+import {connect} from 'react-redux';
+import Tab from '../Common/TabsBar/Tab/Tab';
+import ShowIf from '../Common/ShowIf';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
+import {pageLoading} from '../../actions/tabsBar';
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import Constants from '../../common/constants';
 
 class Search extends React.Component {
 

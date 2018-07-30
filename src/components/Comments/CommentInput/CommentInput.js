@@ -7,7 +7,7 @@ import LoadingSpinner from '../../LoadingSpinner';
 import Utils from '../../../utils/Utils';
 import './commentInput.css';
 import Constants from '../../../common/constants';
-import AuthService from "../../../services/AuthService";
+import AuthService from '../../../services/AuthService';
 
 class CommentInput extends React.Component {
 

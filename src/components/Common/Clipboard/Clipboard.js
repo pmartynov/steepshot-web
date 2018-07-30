@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {CopyToClipboard} from "react-copy-to-clipboard";
+import {connect} from 'react-redux';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import './clipboard.css';
-import {pushMessage} from "../../../actions/pushMessage";
+import {pushMessage} from '../../../actions/pushMessage';
 
 class Clipboard extends React.Component {
 

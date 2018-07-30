@@ -2,9 +2,9 @@ import React from 'react';
 import Constants from '../../common/constants';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import {withWrapper} from "create-react-server/wrapper";
-import {connect} from "react-redux";
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import {withWrapper} from 'create-react-server/wrapper';
+import {connect} from 'react-redux';
 
 class Feed extends React.Component {
 

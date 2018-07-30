@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './settingsField.css';
-import {initializeSettingsField, toggleSettingsField} from "../../../actions/settingsFields";
-import Switcher from "../../Switcher/Switcher";
+import {initializeSettingsField, toggleSettingsField} from '../../../actions/settingsFields';
+import Switcher from '../../Switcher/Switcher';
 
 class SettingsField extends React.Component {
 
