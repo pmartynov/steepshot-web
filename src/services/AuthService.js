@@ -1,6 +1,6 @@
 import {getStore} from '../store/configureStore';
 import storage from '../utils/Storage';
-import StorageService from "./StorageService";
+import StorageService from './StorageService';
 
 class AuthService {
 	static getUsername() {

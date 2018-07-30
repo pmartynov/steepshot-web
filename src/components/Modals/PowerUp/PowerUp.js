@@ -28,8 +28,7 @@ class PowerUp extends React.Component {
 			                     ok={this.sendPowerUp}>
 				<InOutSteem point="power-up"/>
 				<div className="description_power-up">
-					Tokens give you the ability to influence the reward for content, as well as the ability to earn content from
-					content.
+					Tokens give you the ability to influence the reward for content.
 				</div>
 				<div className="description_power-up">
 					STEEM POWER - non-liquid tokens, it takes three months (13 weekly payments) to convert them into Steem's

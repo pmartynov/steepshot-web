@@ -170,7 +170,6 @@ export function setInitDataForEditPost(postUrl) {
 export function editPost() {
 	const postData = getStore().getState().editPost.initData.dataResponse;
 	let {title, tags, description} = prepareData();
-
 	return (dispatch) => {
 		if (!isValidField(dispatch, title, 'no empty string')) {
 			return;
@@ -192,11 +191,15 @@ export function editPost() {
 
 function setCategoryTag(tags, postData) {
 	if (tags) {
-		let tagArray = tags.split(' ');
-		if (tagArray[0] !== postData.category) {
-			tagArray = [postData.category].concat(tagArray.splice(tagArray.indexOf(postData.category), 1));
+		let tagsArray = tags.split(' ');
+		if (tagsArray[0] !== postData.category) {
+      if (tagsArray.indexOf(postData.category) !== -1) {
+        tagsArray = [postData.category].concat(tagsArray.splice(tagsArray.indexOf(postData.category), 1));
+			} else {
+        tagsArray = [postData.category].concat(tagsArray);
+			}
 		}
-		return tagArray.join(' ');
+		return tagsArray.join(' ');
 	}
 }
 

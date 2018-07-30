@@ -146,6 +146,8 @@
     background: url('/images/wallet/buttons/wallet.svg') no-repeat center;
     background-size: 100% 100%;
     transition: 0s;
+    width: 20px;
+    height: 20px;
 }
 
 .btn-control.wallet:hover {
