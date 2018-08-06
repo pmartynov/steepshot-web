@@ -59,6 +59,10 @@
     justify-content: flex-end;
 }
 
+.span-user-wrap_trx a:hover {
+    opacity: .6;
+}
+
 .mobile-screen .container_trx {
     flex-wrap: wrap;
     justify-content: stretch;

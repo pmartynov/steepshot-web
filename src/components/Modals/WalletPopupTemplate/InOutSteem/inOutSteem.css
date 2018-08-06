@@ -23,12 +23,3 @@
 .start-balance_in-out-steem {
     color: #979b9e;
 }
-
-@media (max-width: 380px) {
-    .short-amount_in-out-steem {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90px;
-    }
-}

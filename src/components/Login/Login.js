@@ -73,7 +73,7 @@ class Login extends React.Component {
 
 	loginWithSteemConnect() {
     SteemConnect.getLoginUrl();
-		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
+		window.location.assign(SteemConnect.getLoginUrl() + '&expires_in=604800');
 	}
 
 	clearLoginErrors() {

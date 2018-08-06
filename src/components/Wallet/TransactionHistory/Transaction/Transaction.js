@@ -6,6 +6,7 @@ import SteemService from '../../../../services/SteemService';
 import AuthService from '../../../../services/AuthService';
 import ShowIf from '../../../Common/ShowIf';
 import Utils from '../../../../utils/Utils';
+import {Link} from 'react-router-dom';
 
 const Transaction = ({operation, data, date, index, isMobileScreen, isExtraSmall}) => {
 	let memo = /^#/.test(data.memo) ? (<div className="encoded-memo_trx">data.memo</div>) : data.memo;
@@ -74,7 +75,7 @@ function getOperationBody(operation, data) {
 			const isFrom = data.from === AuthService.getUsername();
 			return (
 				<div className="info_trx">
-					{wrap(data.amount)}&nbsp;{isFrom ? 'to' : 'from'}&nbsp;{wrap(isFrom ? data.to : data.from)}
+					{wrap(data.amount)}&nbsp;{isFrom ? 'to' : 'from'}&nbsp;{wrapUser(isFrom ? data.to : data.from)}
 				</div>
 			);
 		case 'claim_reward_balance':
@@ -111,5 +112,11 @@ function getOperationBody(operation, data) {
 
 function wrap(data, empty = true) {
 	if (/^0\.000/.test(data) && empty) return '';
-	return (<span style={{color: '#e74800'}}>{data}</span>);
+	return (<span style={{color: '#0f181e'}}>{data}</span>);
+}
+
+function wrapUser(data) {
+  return (<span className="span-user-wrap_trx">
+						<Link to={`/@${data}`}>{data}</Link>
+					</span>);
 }

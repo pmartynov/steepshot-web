@@ -24,6 +24,7 @@ class PowerDown extends React.Component {
 		return (
 			<WalletPopupTemplate title="CONVERT TO STEEM"
 			                     username={username}
+													 notBotUsernameLink={`/@${username}`}
 			                     textButton="POWER DOWN"
 			                     cancel={this.props.closePowerUpModal}
 			                     ok={this.props.powerDown}>

@@ -2,7 +2,8 @@ import sc2 from 'sc2-sdk';
 import AuthService from './AuthService';
 import SteemService from './SteemService';
 
-const callbackURL = `${document.location.origin}/steemConnect`;
+const location = window.location;
+const callbackURL = `${location.origin}/steemConnect`;
 const api = sc2.Initialize({
 	app: 'dev.steepshot',
 	callbackURL,
@@ -55,18 +56,18 @@ class SteemConnect {
 	}
 
   sendTransferTroughBlockchain(transferInfo) {
-		const transferLink = api.sign('transfer', transferInfo, document.location.href);
-		window.location.assign(transferLink);
+		const transferLink = api.sign('transfer', transferInfo, location.href);
+    location.assign(transferLink);
 	}
 
   powerUp(powerUpInfo) {
-    const powerUpLink = api.sign('transfer_to_vesting', powerUpInfo, document.location.href);
-    window.location.assign(powerUpLink);
+    const powerUpLink = api.sign('transfer_to_vesting', powerUpInfo, location.href);
+    location.assign(powerUpLink);
 	}
 
   powerDown(powerDownInfo) {
-    const powerDownLink = api.sign('withdraw_vesting', powerDownInfo, document.location.href);
-    window.location.assign(powerDownLink);
+    const powerDownLink = api.sign('withdraw_vesting', powerDownInfo, location.href);
+    location.assign(powerDownLink);
 	}
 
 	getAccounts(username) {

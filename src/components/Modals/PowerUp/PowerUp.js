@@ -23,6 +23,7 @@ class PowerUp extends React.Component {
 		return (
 			<WalletPopupTemplate title="CONVERT TO STEEM POWER"
 			                     username={username}
+													 notBotUsernameLink={`/@${username}`}
 			                     textButton="POWER UP"
 			                     cancel={this.props.closePowerUpModal}
 			                     ok={this.sendPowerUp}>
