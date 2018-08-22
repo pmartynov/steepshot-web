@@ -111,21 +111,16 @@ const ScaleFill = styled.div`
   position: absolute;
   z-index: 1;
   top: 50%;
-  ${({mobileOutScaleFillWidth, powerInPercents}) => (
-    `margin-left: calc(-1 * (326px - (326px * ${powerInPercents} / 100)));
+  ${({powerInPercents}) => (
+    `margin-left: calc(-1 * ((100% - 2px) - ((100% - 2px) * ${powerInPercents} / 100)));
      left: ${powerInPercents > 0 ? '1px' : '0'}
      transform: translateY(-50%);
      height: 26px;
      border-radius: 15px;
-     width: 326px;
+     width: calc(100% - 2px);
      background-image: linear-gradient(96deg, #ff7904, #ff1605);
      box-shadow: 0 10px 20px 0 rgba(231, 72, 0, 0.3);
-     
-     @media (max-width: 460px) {
-       width: calc(100vw - ${mobileOutScaleFillWidth});
-       margin-left: calc(-1 * ((100vw - ${mobileOutScaleFillWidth}) - ((100vw - ${mobileOutScaleFillWidth}) * 
-       ${powerInPercents} / 100)));
-    }`
+    `
   )}
  `;
 
@@ -208,18 +203,17 @@ class CancelPowerDown extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const shortPointSteemPowerInscription = 400;
   const {to_withdraw, withdrawn} = state.wallet;
-  const toWithdraw = (SteemService.vestsToSp(to_withdraw) / 1000000);
-  const withdranPower = withdrawn ? (SteemService.vestsToSp(withdrawn) / 1000000) : 0;
+  const toWithdraw = (SteemService.vestsToSp(to_withdraw) / 1e6);
+  const withdranPower = withdrawn ? (SteemService.vestsToSp(withdrawn) / 1e6) : 0;
   const requestedPower = (toWithdraw + withdranPower).toFixed(3);
   const powerInPercents = parseFloat((withdranPower * 100 / requestedPower).toFixed(1));
-  const mobileOutScaleFillWidth = (30 * 2 + 55 + 14 + 4) + 'px';
   return {
-    isSteemPowerCut: state.window.width <= 400,
+    isSteemPowerCut: state.window.width <= shortPointSteemPowerInscription,
     user: state.auth.user,
     payedPower: withdranPower.toFixed(3),
     remainedPayout: (requestedPower - withdranPower).toFixed(3),
-    mobileOutScaleFillWidth,
     requestedPower,
     powerInPercents
   };
