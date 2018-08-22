@@ -9,6 +9,7 @@ import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
 
 const Wrapper = styled.div`
   width: 460px;
+  max-width: 100vw;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 25px 30px 20px 30px;
@@ -18,10 +19,22 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
+  font: 14px OpenSans-Bold;
+  
+  @media (max-width: 400px) {
+    font: 12px OpenSans-Bold;
+  }
+  
+  @media (max-width: 350px) {
+    flex-direction: column;
+    
+    & div:first-child {
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const Title = styled.div`
-  font: 14px OpenSans-Bold;
   color: #0f181e;
   text-transform: uppercase;
 `;
@@ -36,7 +49,6 @@ const LinkToUser = ({className, children, user}) => {
 
 const StyledLinkToUser = styled(LinkToUser)`
   color: #e74800; 
-  font: 14px OpenSans-Bold;
   
   &:hover {
     opacity: .6;
@@ -91,21 +103,31 @@ const PercentsSpan = styled.div`
   color: #0f181e;
   font: 14px OpenSans-SemiBold;
   margin-left: 14px;
+  min-width: 55px;
+  text-align: right;
 `;
 
 const ScaleFill = styled.div`
   position: absolute;
   z-index: 1;
   top: 50%;
-  left: ${props => props.powerInPercents > 0 ? '1px' : '0'}
-  transform: translateY(-50%);
-  height: 26px;
-  border-radius: 15px;
-  width: 326px;
-  background-image: linear-gradient(96deg, #ff7904, #ff1605);
-  box-shadow: 0 10px 20px 0 rgba(231, 72, 0, 0.3);
-  margin-left: calc(-1 * (326px - (326px * ${props => props.powerInPercents} / 100)));
-`;
+  ${({mobileOutScaleFillWidth, powerInPercents}) => (
+    `margin-left: calc(-1 * (326px - (326px * ${powerInPercents} / 100)));
+     left: ${powerInPercents > 0 ? '1px' : '0'}
+     transform: translateY(-50%);
+     height: 26px;
+     border-radius: 15px;
+     width: 326px;
+     background-image: linear-gradient(96deg, #ff7904, #ff1605);
+     box-shadow: 0 10px 20px 0 rgba(231, 72, 0, 0.3);
+     
+     @media (max-width: 460px) {
+       width: calc(100vw - ${mobileOutScaleFillWidth});
+       margin-left: calc(-1 * ((100vw - ${mobileOutScaleFillWidth}) - ((100vw - ${mobileOutScaleFillWidth}) * 
+       ${powerInPercents} / 100)));
+    }`
+  )}
+ `;
 
 const ButtonsHolder = styled.div`
   display: flex;
@@ -114,6 +136,14 @@ const ButtonsHolder = styled.div`
   
   & button:first-child {
     margin-right: 10px;
+  }
+  
+  @media (max-width: 431px) {
+      flex-direction: column;
+      
+      & button:first-child {
+        margin: 0 0 10px 0;
+      }
   }
 `;
 
@@ -125,7 +155,12 @@ const ActiveKeyField = styled(InputActiveKey)`
 class CancelPowerDown extends React.Component {
 
   render() {
-    const {user, requestedPower, payedPower, remainedPayout, powerInPercents, closeModal, cancelPowerDown} = this.props;
+    const {user, requestedPower, payedPower, remainedPayout, powerInPercents, closeModal, cancelPowerDown,
+      isSteemPowerCut, mobileOutScaleFillWidth} = this.props;
+    let steemPowerInscription = 'STEEM POWER';
+    if (isSteemPowerCut) {
+      steemPowerInscription = 'SP'
+    }
     return (
       <Wrapper>
         <Header>
@@ -139,12 +174,12 @@ class CancelPowerDown extends React.Component {
         <AmountField>
           Reqested
           <AmountSpan>
-            {requestedPower} STEEM POWER
+            {requestedPower} {steemPowerInscription}
           </AmountSpan>
         </AmountField>
         <ScaleBlock>
           <PercentsWrapper>
-            <ScaleFill powerInPercents={powerInPercents}/>
+            <ScaleFill powerInPercents={powerInPercents} mobileOutScaleFillWidth={mobileOutScaleFillWidth}/>
           </PercentsWrapper>
           <PercentsSpan>
             {powerInPercents} %
@@ -159,7 +194,7 @@ class CancelPowerDown extends React.Component {
         <BottomAmountField>
           Remaining
           <AmountSpan>
-            {remainedPayout} STEEM POWER
+            {remainedPayout} {steemPowerInscription}
           </AmountSpan>
         </BottomAmountField>
         <ActiveKeyField/>
@@ -178,10 +213,13 @@ const mapStateToProps = state => {
   const withdranPower = withdrawn ? (SteemService.vestsToSp(withdrawn) / 1000000) : 0;
   const requestedPower = (toWithdraw + withdranPower).toFixed(3);
   const powerInPercents = parseFloat((withdranPower * 100 / requestedPower).toFixed(1));
+  const mobileOutScaleFillWidth = (30 * 2 + 55 + 14 + 4) + 'px';
   return {
+    isSteemPowerCut: state.window.width <= 400,
     user: state.auth.user,
     payedPower: withdranPower.toFixed(3),
     remainedPayout: (requestedPower - withdranPower).toFixed(3),
+    mobileOutScaleFillWidth,
     requestedPower,
     powerInPercents
   };

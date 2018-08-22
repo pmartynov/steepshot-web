@@ -186,7 +186,7 @@ class Header extends React.Component {
 const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
-		sizeParam: document.body.clientWidth < 420,
+		sizeParam: state.window.width < 420,
 		isAuth: AuthService.isAuth(),
 		user: state.auth.user,
 		avatar: state.auth.avatar,

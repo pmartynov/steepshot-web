@@ -5,8 +5,6 @@ import ReactResizeDetector from 'react-resize-detector';
 import ShowIf from '../../Common/ShowIf';
 import './modal.css';
 
-const mobileSize = document.documentElement.clientWidth < 815;
-
 class Modal extends React.Component {
 
 	componentDidMount() {
@@ -62,7 +60,7 @@ class Modal extends React.Component {
 				>
 					{this.props.body}
 				</div>
-				<ShowIf show={!mobileSize}>
+				<ShowIf show={!this.props.mobileSize}>
 					<ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)}/>
 				</ShowIf>
 			</div>
@@ -73,6 +71,7 @@ class Modal extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		...state.modals[props.index],
+    mobileSize: state.window.width < 815,
 		state: state,
 		fullScreenMode: state.postModal.fullScreenMode,
 		window: state.window

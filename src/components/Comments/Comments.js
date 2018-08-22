@@ -33,16 +33,16 @@ class Comments extends React.Component {
 	}
 
 	render() {
-		const isMobile = document.documentElement.clientWidth < 815;
+		const {isMobile, loading, errorMessage, post, point} = this.props;
 		let comments = null, propsComments = this.props.comments;
 
-		if (this.props.loading && (!propsComments || !propsComments.length)) {
+		if (loading && (!propsComments || !propsComments.length)) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
-		if (!this.props.loading && (!propsComments || !propsComments.length)) {
+		if (!loading && (!propsComments || !propsComments.length)) {
 			let warningMessage = '';
-			if (this.props.errorMessage) {
-				warningMessage = this.props.errorMessage;
+			if (errorMessage) {
+				warningMessage = errorMessage;
 			}
 			comments = <div className="empty-query-message_comment">
 				{warningMessage}
@@ -65,12 +65,12 @@ class Comments extends React.Component {
 						autoHeightMax={15000}
 					>
 						<Description
-							title={this.props.post.title}
-							tags={this.props.post.tags}
-							description={this.props.post.description}
+							title={post.title}
+							tags={post.tags}
+							description={post.description}
 						/>
 						<ShowIf show={isMobile}>
-							<CommentInput point={this.props.point}/>
+							<CommentInput point={point}/>
 						</ShowIf>
 						<div className="list_comments">
 							{comments}
@@ -78,7 +78,7 @@ class Comments extends React.Component {
 					</Scrollbars>
 				</div>
 				<ShowIf show={!isMobile} className='comment-input-big-screen'>
-					<CommentInput point={this.props.point}/>
+					<CommentInput point={point}/>
 				</ShowIf>
 			</div>
 		);
@@ -87,6 +87,7 @@ class Comments extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	return {
+    isMobile: state.window.width < 815,
 		isUserAuth: AuthService.isAuth(),
 		post: state.posts[props.point],
 		...state.comments[props.point]
